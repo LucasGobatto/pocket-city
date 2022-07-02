@@ -1,0 +1,33 @@
+.purchase-wrapper {
+  display: flex;
+}
+
+.purchase-button-container {
+  display: flex;
+  margin: 15px;
+}
+
+.purchase-button {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  color: #f3f3f3;
+  border-style: none;
+  width: 100px;
+  height: 50px;
+  margin: 5px;
+}
+
+.purchase-button#house-button {
+  background-color: #314f35;
+}
+.purchase-button#factory-button {
+  background-color: #444444;
+}
+
+
+
+.purchase-price {
+  font-size: 16px;
+  margin: auto 0;
+}

@@ -1,0 +1,29 @@
+{
+  "name": "pocket-city",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucasGobatto/pocket-city.git"
+  },
+  "keywords": [
+    "game",
+    "upgrade",
+    "click-game"
+  ],
+  "author": "LucasGobatto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LucasGobatto/pocket-city/issues"
+  },
+  "homepage": "https://github.com/LucasGobatto/pocket-city#readme",
+  "dependencies": {
+    "cors": "2.8.5",
+    "express": "4.18.1"
+  }
+}

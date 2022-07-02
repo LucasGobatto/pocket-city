@@ -1,0 +1,25 @@
+.factory-entity {
+  width: 60px;
+  height: 60px;
+  margin: 10px;
+  position: relative;
+}
+
+.chimney {
+  position: absolute;
+  background-color: #4A2301;
+  width: 15px;
+  height: 40px;
+  z-index: 0;
+  top: 0;
+}
+
+.windows {
+  position: absolute;
+  border-radius: 0 5px 0 0;
+  bottom: 0;
+  background-color: #CCC;
+  width: 55px;
+  height: 40px;
+  z-index: 1;
+}
