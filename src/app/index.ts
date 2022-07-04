@@ -7,7 +7,7 @@ import "../components/styles/global.css";
 
 import { PocketCityGame } from "./game";
 
-const gameTicker = 850;
+const gameTicker = 1250;
 
 const game = new PocketCityGame(gameTicker);
 

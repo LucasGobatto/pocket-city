@@ -23,7 +23,6 @@ module.exports = {
     new HTMLWebpackPlugin({
       template: path.join(__dirname, "src", "components", "app.html"),
     }),
-    new webpack.HotModuleReplacementPlugin({ hot: true }),
   ],
   resolve: {
     extensions: [".tsx", ".ts", ".js"],

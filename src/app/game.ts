@@ -1,117 +1,83 @@
 import { FactoryBuild, HouseBuild } from "./buildings";
-import { RateController } from "./controler";
-import { Build } from "./models";
-import { currentDayDisplay, factoryButton, houseButton, moneyDisplay, populationDisplay } from "./tags";
+import { BudgetController, EventListenerController, RateController } from "./controllers";
+import { GameStats } from "./game-stats";
+import { currentDayDisplay, moneyDisplay, populationDisplay, weekProfite } from "./tags";
 
 export class PocketCityGame {
-  private gameTicker: number;
-  private population = {
-    total: 0,
-    adults: 0,
-    children: 0,
-  };
-  private money = 200;
-  private day: number;
-  private profite = {
-    day: 1,
-    citizen: 0.4,
-  };
-
-  private houseBuild: HouseBuild;
-  private factoryBuild: FactoryBuild;
+  private readonly houseBuild: HouseBuild;
+  private readonly factoryBuild: FactoryBuild;
 
   constructor(gameTicker: number) {
-    this.gameTicker = gameTicker;
+    GameStats.gameTicker = gameTicker;
 
     this.houseBuild = new HouseBuild();
     this.factoryBuild = new FactoryBuild();
 
-    this.addEventListeners();
+    const eventListenerController = new EventListenerController(this.houseBuild, this.factoryBuild);
+    eventListenerController.addEventListeners();
   }
 
   async run() {
     for (let day = 1; true; day++) {
-      this.day = day;
+      GameStats.day = day;
 
-      this.updatePopulationRate();
+      this.incresePopulation();
       this.increaseMoney();
       this.diplayUpdatedData();
-      this.verifyBudgetAndUpdateButtons();
+      this.updateWeekProfite();
+      BudgetController.verifyBudgetAndUpdateButtons([this.houseBuild, this.factoryBuild]);
 
       await this.sleep();
     }
   }
 
   private increaseMoney() {
-    if (this.day % 7 === 0) {
-      this.money += this.houseBuild.getProfite() + this.factoryBuild.getProfite();
-      this.money += this.profite.day;
-      this.money += this.population.total * this.profite.citizen;
+    if (GameStats.day % 7 === 0) {
+      GameStats.money += this.houseBuild.getProfite() + this.factoryBuild.getProfite();
+      GameStats.money += GameStats.profite.day;
+      GameStats.money += GameStats.population.total * GameStats.profite.citizens;
     }
   }
 
-  private updatePopulationRate() {
-    if (this.day % 60 === 0) {
-      this.population.adults -= RateController.deathRateController(this.population.adults);
+  private updateWeekProfite() {
+    console.log({
+      house: this.houseBuild.getProfite(),
+      factory: this.factoryBuild.getProfite(),
+      day: GameStats.profite.day,
+      citizens: GameStats.population.total * GameStats.profite.citizens,
+    });
+    const profite = (
+      this.houseBuild.getProfite() +
+      this.factoryBuild.getProfite() +
+      GameStats.profite.day +
+      GameStats.population.total * GameStats.profite.citizens
+    ).toFixed(2);
+
+    weekProfite.innerHTML = `+$ ${profite} / week`;
+  }
+
+  private incresePopulation() {
+    if (GameStats.day % 60 === 0) {
+      GameStats.population.adults -= RateController.deathRateController(GameStats.population.adults);
     }
 
-    if (this.day % 30 === 0) {
-      this.population.adults += this.population.children;
-      this.population.children = RateController.birthRateController(this.population.adults - this.population.children);
+    if (GameStats.day % 30 === 0) {
+      GameStats.population.adults += GameStats.population.children;
+      GameStats.population.children = RateController.birthRateController(
+        GameStats.population.adults - GameStats.population.children
+      );
     }
 
-    this.population.total = Number((this.population.adults + this.population.children).toFixed(0));
+    GameStats.population.total = Number((GameStats.population.adults + GameStats.population.children).toFixed(0));
   }
 
   private diplayUpdatedData() {
-    currentDayDisplay.innerHTML = `Day ${this.day}`;
-    moneyDisplay.innerHTML = `$ ${this.money.toFixed(2)}`;
-    populationDisplay.innerHTML = `Population: ${this.population.total}`;
-  }
-
-  private verifyBudgetAndUpdateButtons() {
-    const buildings = [this.factoryBuild, this.houseBuild];
-
-    for (const building of buildings) {
-      const buildPrice = building.getPrice();
-
-      const hasMoneyToBuild = this.money >= buildPrice;
-
-      building.setActive(hasMoneyToBuild);
-    }
-  }
-
-  private addEventListeners() {
-    houseButton.addEventListener("click", () => {
-      this.addBuildingEntity(this.houseBuild);
-    });
-    factoryButton.addEventListener("click", () => {
-      this.addBuildingEntity(this.factoryBuild);
-    });
-  }
-
-  private addBuildingEntity(building: Build) {
-    const price = building.getPrice();
-    const { money, population } = this;
-
-    if (money < price) {
-      console.log("not enough money");
-      return;
-    }
-
-    building.addBuild();
-
-    const newStatus = building.updateCityStatus({ money, population });
-    this.money = newStatus.money;
-    this.population = { ...this.population, ...newStatus.population };
-
-    building.applyFee();
-    building.updatePriceLabel();
-
-    this.verifyBudgetAndUpdateButtons();
+    currentDayDisplay.innerHTML = `Day ${GameStats.day}`;
+    moneyDisplay.innerHTML = `$ ${GameStats.money.toFixed(2)}`;
+    populationDisplay.innerHTML = `Population: ${GameStats.population.total}`;
   }
 
   private sleep(): Promise<void> {
-    return new Promise((res) => setTimeout(() => res(), this.gameTicker));
+    return new Promise((res) => setTimeout(() => res(), GameStats.gameTicker));
   }
 }
