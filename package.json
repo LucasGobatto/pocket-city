@@ -2,10 +2,9 @@
   "name": "pocket-city",
   "version": "0.1.0",
   "description": "",
-  "main": "index.ts",
-  "type": "module",
+  "main": "index.js",
   "scripts": {
-    "start": "node ./src/index.js"
+    "start": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
@@ -22,8 +21,17 @@
     "url": "https://github.com/LucasGobatto/pocket-city/issues"
   },
   "homepage": "https://github.com/LucasGobatto/pocket-city#readme",
-  "dependencies": {
-    "cors": "2.8.5",
-    "express": "4.18.1"
+  "devDependencies": {
+    "@types/node": "18.0.1",
+    "css-loader": "6.7.1",
+    "html-webpack-plugin": "5.5.0",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.3.1",
+    "ts-node": "10.8.2",
+    "tsc": "2.0.4",
+    "typescript": "4.7.4",
+    "webpack": "5.73.0",
+    "webpack-cli": "4.10.0",
+    "webpack-dev-server": "4.9.3"
   }
 }
