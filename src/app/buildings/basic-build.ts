@@ -50,11 +50,15 @@ export abstract class BasicBuild {
     return population;
   }
 
-  addBuild(building: Element) {
+  addBuild(building: Element, icon: any) {
     this.mutiple += 1;
+    const image = new Image();
+    image.src = icon;
 
     const build: any = building.cloneNode(true);
     build.style.display = "block";
+    build.style.backgroundImage = `url(${image.src})`;
+
     neighborhood.appendChild(build);
 
     return this;

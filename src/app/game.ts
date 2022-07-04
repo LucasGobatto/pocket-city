@@ -1,11 +1,13 @@
 import { FactoryBuild, HouseBuild } from "./buildings";
 import { BudgetController, EventListenerController, RateController } from "./controllers";
 import { GameStats } from "./game-stats";
-import { currentDayDisplay, moneyDisplay, populationDisplay, weekProfite } from "./tags";
+import { Build } from "./models";
+import { currentDayDisplay, moneyDisplay, populationDisplay } from "./tags";
 
 export class PocketCityGame {
   private readonly houseBuild: HouseBuild;
   private readonly factoryBuild: FactoryBuild;
+  private readonly buildings: Build[];
 
   constructor(gameTicker: number) {
     GameStats.gameTicker = gameTicker;
@@ -13,7 +15,9 @@ export class PocketCityGame {
     this.houseBuild = new HouseBuild();
     this.factoryBuild = new FactoryBuild();
 
-    const eventListenerController = new EventListenerController(this.houseBuild, this.factoryBuild);
+    this.buildings = [this.houseBuild, this.factoryBuild];
+
+    const eventListenerController = new EventListenerController(this.buildings);
     eventListenerController.addEventListeners();
   }
 
@@ -24,8 +28,8 @@ export class PocketCityGame {
       this.incresePopulation();
       this.increaseMoney();
       this.diplayUpdatedData();
-      this.updateWeekProfite();
-      BudgetController.verifyBudgetAndUpdateButtons([this.houseBuild, this.factoryBuild]);
+      BudgetController.updateWeekProfite(this.buildings);
+      BudgetController.verifyBudgetAndUpdateButtons(this.buildings);
 
       await this.sleep();
     }
@@ -33,27 +37,10 @@ export class PocketCityGame {
 
   private increaseMoney() {
     if (GameStats.day % 7 === 0) {
-      GameStats.money += this.houseBuild.getProfite() + this.factoryBuild.getProfite();
+      GameStats.money += this.buildings.reduce((concat, build) => (concat += build.getProfite()), 0);
       GameStats.money += GameStats.profite.day;
       GameStats.money += GameStats.population.total * GameStats.profite.citizens;
     }
-  }
-
-  private updateWeekProfite() {
-    console.log({
-      house: this.houseBuild.getProfite(),
-      factory: this.factoryBuild.getProfite(),
-      day: GameStats.profite.day,
-      citizens: GameStats.population.total * GameStats.profite.citizens,
-    });
-    const profite = (
-      this.houseBuild.getProfite() +
-      this.factoryBuild.getProfite() +
-      GameStats.profite.day +
-      GameStats.population.total * GameStats.profite.citizens
-    ).toFixed(2);
-
-    weekProfite.innerHTML = `+$ ${profite} / week`;
   }
 
   private incresePopulation() {

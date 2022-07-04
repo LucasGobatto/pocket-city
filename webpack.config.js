@@ -1,6 +1,5 @@
 const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
-const webpack = require("webpack");
 
 module.exports = {
   entry: "./src/app/index.ts",
@@ -16,6 +15,13 @@ module.exports = {
         test: /\.css$/i,
         exclude: /node_modules/,
         use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        loader: "file-loader",
+        options: {
+          name: path.join(__dirname, "src", "assets/[name].[ext]"),
+        },
       },
     ],
   },

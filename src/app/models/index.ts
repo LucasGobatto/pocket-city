@@ -20,4 +20,5 @@ export interface Build {
   updateCityStatus: (cityStatus: CityStatus) => CityStatus;
   updatePriceLabel: () => this;
   setActive: (active: boolean) => void;
+  getButton: () => Element;
 }

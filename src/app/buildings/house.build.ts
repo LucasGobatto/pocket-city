@@ -1,4 +1,6 @@
+import { BuildingIcons } from "../../assets";
 import { Build } from "../models";
+import { houseButton } from "../tags";
 import { BasicBuild } from "./basic-build";
 
 export class HouseBuild extends BasicBuild implements Build {
@@ -17,8 +19,15 @@ export class HouseBuild extends BasicBuild implements Build {
     );
   }
 
+  getButton() {
+    return houseButton;
+  }
+
   addBuild() {
-    super.addBuild(this.entity);
+    const lenght = BuildingIcons.house.length - 1;
+
+    const icon = BuildingIcons.house[Math.round(Math.random() * lenght)];
+    super.addBuild(this.entity, icon);
 
     return this;
   }

@@ -1,26 +1,9 @@
 .house-entity {
-  width: 60px;
-  height: 60px;
-  margin: 10px;
+  width: 100px;
+  height: 100px;
+  margin: auto;
   position: relative;
-  background-color: #098221;
-}
-
-.rooth {
-  position: absolute;
-  background-color: #a9593e;
-  width: 30px;
-  height: 30px;
-  transform: rotate(45deg);
-  top: 7px;
-  right: 16px
-}
-
-.walls {
-  background-color: #d8d504;
-  width: 40px;
-  height: 35px;
-  position: absolute;
-  bottom: 3px;
-  left: 9px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }

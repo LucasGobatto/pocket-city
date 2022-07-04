@@ -1,28 +1,21 @@
-import { FactoryBuild, HouseBuild } from "../buildings";
 import { addBuildingEntity } from "../event-listeners";
-import { factoryButton, houseButton } from "../tags";
+import { Build } from "../models";
 import { BudgetController } from "./verify-budget-and-update-buttons-controller";
 
 export class EventListenerController {
-  private readonly houseBuild: HouseBuild;
-  private readonly factoryBuild: FactoryBuild;
+  private readonly buildings: Build[];
 
-  constructor(houseBuild: HouseBuild, factoryBuild: FactoryBuild) {
-    this.houseBuild = houseBuild;
-    this.factoryBuild = factoryBuild;
+  constructor(buildings: Build[]) {
+    this.buildings = buildings;
   }
 
   addEventListeners() {
-    const buildings = [this.houseBuild, this.factoryBuild];
-
-    factoryButton.addEventListener("click", () => {
-      addBuildingEntity(this.factoryBuild);
-      BudgetController.verifyBudgetAndUpdateButtons(buildings);
-    });
-
-    houseButton.addEventListener("click", () => {
-      addBuildingEntity(this.houseBuild);
-      BudgetController.verifyBudgetAndUpdateButtons(buildings);
+    this.buildings.forEach((build) => {
+      build.getButton().addEventListener("click", () => {
+        addBuildingEntity(build);
+        BudgetController.verifyBudgetAndUpdateButtons(this.buildings);
+        BudgetController.updateWeekProfite(this.buildings);
+      });
     });
   }
 }
