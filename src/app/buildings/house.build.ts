@@ -1,38 +1,8 @@
-import { BuildingIcons } from "../../assets";
-import { Build } from "../models";
-import { houseButton } from "../tags";
-import { BasicBuild } from "./basic-build";
+import { BuildNames } from "../models";
+import { BaseBuild } from "./base.build";
 
-export class HouseBuild extends BasicBuild implements Build {
-  constructor(price = 5) {
-    super(
-      0,
-      price,
-      1.2,
-      0.2,
-      {
-        children: 2,
-        adults: 2,
-        total: 4,
-      },
-      "house"
-    );
-  }
-
-  getButton() {
-    return houseButton;
-  }
-
-  addBuild() {
-    const lenght = BuildingIcons.house.length - 1;
-
-    const icon = BuildingIcons.house[Math.round(Math.random() * lenght)];
-    super.addBuild(this.entity, icon);
-
-    return this;
-  }
-
-  setActive(active: boolean) {
-    super.setActive(active, "house");
+export class HouseBuild extends BaseBuild {
+  constructor() {
+    super({ element: BuildNames.house, price: 7, profite: 1.2, fee: 1.05, animationTime: 3 });
   }
 }

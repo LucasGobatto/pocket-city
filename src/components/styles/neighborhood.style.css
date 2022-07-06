@@ -1,9 +1,0 @@
-.neighborhood {
-  margin: auto;
-  width: auto;
-  height: auto;
-  display: grid;
-  grid-template-columns: repeat(14, 110px);
-  grid-template-rows: repeat(5, 110px);
-  overflow: hidden;
-}

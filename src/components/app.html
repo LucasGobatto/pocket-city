@@ -12,25 +12,99 @@
       <div class="wallet-money">$ 0.00</div>
       <div class="week-profite">+ 0.00</div>
       <div class="population">Population: 0</div>
-      <div class="current-day">Day 0</div>
     </main>
 
     <div class="purchase-wrapper">
       <div class="purchase-button-container">
+        <div class="purchase-icon"></div>
         <button class="purchase-button" id="house-button" name="active">Buy House</button>
-        <p class="purchase-price" id="house-price"></p>
+        <div class="slider-wrapper" id="house-slider">
+          <p class="purchase-price" id="house-price">$ 7.00</p>
+          <div class="slider" id="house-slider"></div>
+          <p class="profite-label" id="house-profite"></p>
+        </div>
       </div>
       <div class="purchase-button-container">
-        <button class="purchase-button" id="factory-button" name="active">Buy Factory</button>
-        <p class="purchase-price" id="factory-price"></p>
+        <div class="purchase-icon"></div>
+        <button class="purchase-button" id="factory-button" name="disable">Buy Factory</button>
+        <div class="slider-wrapper" id="factory-slider">
+          <p class="purchase-price" id="factory-price"></p>
+          <div class="slider" id="factory-slider"></div>
+          <p class="profite-label" id="factory-profite"></p>
+        </div>
       </div>
-    </div>
-
-    <div class="info-card"></div>
-
-    <div class="neighborhood">
-      <div class="house-entity" style="display: none"></div>
-      <div class="factory-entity" style="display: none"></div>
+      <div class="purchase-button-container">
+        <div class="purchase-icon"></div>
+        <button class="purchase-button" id="shop-button" name="disable">Buy Shop</button>
+        <div class="slider-wrapper" id="shop-slider">
+          <p class="purchase-price" id="shop-price"></p>
+          <div class="slider" id="shop-slider"></div>
+          <p class="profite-label" id="shop-profite"></p>
+        </div>
+      </div>
+      <div class="purchase-button-container">
+        <div class="purchase-icon"></div>
+        <button class="purchase-button" id="school-button" name="disable">Buy School</button>
+        <div class="slider-wrapper" id="school-slider">
+          <p class="purchase-price" id="school-price"></p>
+          <div class="slider" id="school-slider"></div>
+          <p class="profite-label" id="school-profite"></p>
+        </div>
+      </div>
+      <div class="purchase-button-container">
+        <div class="purchase-icon"></div>
+        <button class="purchase-button" id="public-transport-button" name="disable">Buy Public Transport</button>
+        <div class="slider-wrapper" id="public-transport-slider">
+          <p class="purchase-price" id="public-transport-price"></p>
+          <div class="slider" id="public-transport-slider"></div>
+          <p class="profite-label" id="public-transport-profite"></p>
+        </div>
+      </div>
+      <div class="purchase-button-container">
+        <div class="purchase-icon"></div>
+        <button class="purchase-button" id="usine-button" name="disable">Buy Usine</button>
+        <div class="slider-wrapper" id="usine-slider">
+          <p class="purchase-price" id="usine-price"></p>
+          <div class="slider" id="usine-slider"></div>
+          <p class="profite-label" id="usine-profite"></p>
+        </div>
+      </div>
+      <div class="purchase-button-container">
+        <div class="purchase-icon"></div>
+        <button class="purchase-button" id="church-button" name="disable">Buy Church</button>
+        <div class="slider-wrapper" id="church-slider">
+          <p class="purchase-price" id="church-price"></p>
+          <div class="slider" id="church-slider"></div>
+          <p class="profite-label" id="church-profite"></p>
+        </div>
+      </div>
+      <div class="purchase-button-container">
+        <div class="purchase-icon"></div>
+        <button class="purchase-button" id="mall-button" name="disable">Buy Mall</button>
+        <div class="slider-wrapper" id="mall-slider">
+          <p class="purchase-price" id="mall-price"></p>
+          <div class="slider" id="mall-slider"></div>
+          <p class="profite-label" id="mall-profite"></p>
+        </div>
+      </div>
+      <div class="purchase-button-container">
+        <div class="purchase-icon"></div>
+        <button class="purchase-button" id="airport-button" name="disable">Buy Airport</button>
+        <div class="slider-wrapper" id="airport-slider">
+          <p class="purchase-price" id="airport-price"></p>
+          <div class="slider" id="airport-slider"></div>
+          <p class="profite-label" id="airport-profite"></p>
+        </div>
+      </div>
+      <div class="purchase-button-container">
+        <div class="purchase-icon"></div>
+        <button class="purchase-button" id="city-hall-button" name="disable">Buy City Hall</button>
+        <div class="slider-wrapper" id="city-hall-slider">
+          <p class="purchase-price" id="city-hall-price"></p>
+          <div class="slider" id="city-hall-slider"></div>
+          <p class="profite-label" id="city-hall-profite"></p>
+        </div>
+      </div>
     </div>
   </body>
 </html>

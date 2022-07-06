@@ -1,24 +1,28 @@
-export interface Population {
-  adults: number;
-  children: number;
-  total: number;
-}
-
 export interface CityStatus {
   money: number;
-  population: Population;
+  population: number;
 }
 
-export type Building = "house" | "factory";
-
 export interface Build {
-  applyFee: () => this;
-  getPrice: () => number;
+  animated: boolean;
+  setAnimation: () => void;
+  getButton: () => HTMLButtonElement;
   getProfite: () => number;
-  increasePopulation: (population: Population) => Population;
-  addBuild: () => this;
-  updateCityStatus: (cityStatus: CityStatus) => CityStatus;
+  getAnimationTime: () => number;
+  getSlider: () => HTMLDivElement;
+  addBuild: () => void;
   updatePriceLabel: () => this;
-  setActive: (active: boolean) => void;
-  getButton: () => Element;
+}
+
+export enum BuildNames {
+  house = "house",
+  factory = "factory",
+  shop = "shop",
+  school = "school",
+  publicTransport = "public-transport",
+  usine = "usine",
+  church = "church",
+  mall = "mall",
+  airport = "airport",
+  cityHall = "city-hall",
 }
