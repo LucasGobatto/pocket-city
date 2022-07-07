@@ -1,25 +1,27 @@
-import { HouseBuild } from "./buildings";
+import { Service } from "typedi";
+import { FactoryBuild, HouseBuild } from "./buildings";
 import { AddEventListenerController } from "./event-listener";
 import { GameStats } from "./game-stats";
-import { Build } from "./models";
 
+@Service()
 export class PocketCityGame {
-  private readonly buildings: Build[];
-  private readonly addEventListenerController: AddEventListenerController;
-
-  constructor() {
-    this.buildings = [new HouseBuild()];
-    this.addEventListenerController = new AddEventListenerController(this.buildings);
+  constructor(
+    private readonly addEventListenerController: AddEventListenerController,
+    private readonly houseBuild: HouseBuild,
+    private readonly factoryBuild: FactoryBuild
+  ) {
     this.addEventListenerController.addEventListeners();
+    GameStats.updateMoney(0);
   }
 
   async run() {
-    for (let day = 1; true; day++) {
-      await this.sleep();
-    }
-  }
+    setInterval(() => {
+      const factoryPrice = this.factoryBuild.getPrice();
+      const housePrice = this.houseBuild.getPrice();
+      const gameMoney = GameStats.money;
 
-  private sleep(): Promise<void> {
-    return new Promise((res) => setTimeout(() => res(), GameStats.gameTicker));
+      this.houseBuild.setActive(housePrice <= gameMoney);
+      this.factoryBuild.setActive(factoryPrice <= gameMoney);
+    }, GameStats.gameTicker);
   }
 }

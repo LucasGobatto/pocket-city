@@ -1,3 +1,4 @@
+import Container from "typedi";
 import { AddAnimation } from "../event-listener/add-animation.event-listener";
 import { GameStats } from "../game-stats";
 import { Build, BuildNames } from "../models";
@@ -14,26 +15,38 @@ export abstract class BaseBuild implements Build {
   private readonly slider: HTMLDivElement;
   private readonly button: HTMLButtonElement;
   private readonly priceLabel: HTMLParagraphElement;
+  private readonly profiteLabel: HTMLDivElement;
+  private readonly purchaseIcon: HTMLDivElement;
   private price: number;
   private amount = 0;
   private fee: number;
   private profite: number;
   private animationTime: number;
   private hasImprover = false;
-  public animated = false;
-
   private interval: NodeJS.Timeout;
+
+  public animated = false;
 
   constructor(props: BuildProps) {
     const { element } = props;
     this.slider = document.querySelector(`.slider#${element}-slider`);
     this.button = document.querySelector(`#${element}-button`);
     this.priceLabel = document.querySelector(`.purchase-price#${element}-price`);
+    this.profiteLabel = document.querySelector(`.profite-label#${element}-profite`);
+    this.purchaseIcon = document.querySelector(`.purchase-icon#${element}`);
 
     this.price = props.price;
     this.profite = props.profite;
     this.fee = props.fee;
     this.animationTime = props.animationTime;
+
+    this.updatePriceLabel();
+    this.setProfitLabel();
+    this.setActive(this.price <= GameStats.money);
+  }
+
+  getPrice() {
+    return this.price;
   }
 
   setAnimation() {
@@ -53,7 +66,11 @@ export abstract class BaseBuild implements Build {
   }
 
   getProfite() {
-    return this.amount * this.profite;
+    return this.price * this.profite;
+  }
+
+  setProfitLabel() {
+    this.profiteLabel.innerHTML = `$ ${this.getProfite().toFixed(2)}`;
   }
 
   getAnimationTime() {
@@ -64,29 +81,40 @@ export abstract class BaseBuild implements Build {
     return this.slider;
   }
 
-  addBuild() {
-    this.stopAnimation();
+  setIcon() {
+    this.purchaseIcon.innerHTML = this.amount.toString();
+  }
 
+  addBuild() {
     if (GameStats.money >= this.price) {
+      this.stopAnimation();
+
       this.amount += 1;
+      this.setIcon();
+
       if (this.amount > 1) {
         this.animationTime *= 0.95;
       }
 
       GameStats.updateMoney(-this.price);
       this.price *= this.fee;
+      AddAnimation.animate(this.slider, this.animationTime);
 
+      if (GameStats.money < this.price) {
+        this.setActive(false);
+      }
+
+      this.setProfitLabel();
       this.updatePriceLabel();
+      this.updateGameMoney();
     } else {
-      alert("not enough money");
+      console.log("not enough money");
       this.setActive(false);
-    }
 
-    this.updateGameMoney();
-    AddAnimation.animate(this.slider, this.animationTime);
-
-    if (this.hasImprover) {
-      AddAnimation.setAnimationInteractionCount(this.slider, "infinite");
+      if (this.hasImprover) {
+        AddAnimation.setAnimationInteractionCount(this.slider, "infinite");
+        this.updateGameMoney();
+      }
     }
   }
 
@@ -107,9 +135,7 @@ export abstract class BaseBuild implements Build {
     this.interval = (this.hasImprover ? setInterval : setTimeout)(() => {
       GameStats.updateMoney(this.getProfite());
 
-      if (GameStats.money >= this.price) {
-        this.setActive(true);
-      }
+      this.setActive(GameStats.money >= this.price);
     }, this.animationTime * 1000);
   }
 
@@ -117,11 +143,5 @@ export abstract class BaseBuild implements Build {
     clearInterval(this.interval);
     clearTimeout(this.interval);
     AddAnimation.removeAnimation(this.slider);
-  }
-
-  private async sleep(): Promise<void> {
-    return new Promise((res) => {
-      this.interval = setInterval(() => res(), this.animationTime * 1000);
-    });
   }
 }

@@ -76,4 +76,11 @@
   color: #f3f3f3;
   font-weight: bold;
   z-index: 1;
+  width: 100px;
+}
+
+.profite-label {
+  margin: auto;
+  width: 100px;
+  text-align: center;
 }

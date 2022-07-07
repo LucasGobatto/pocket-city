@@ -23,6 +23,11 @@ module.exports = {
           name: path.join(__dirname, "src", "assets/[name].[ext]"),
         },
       },
+      {
+        test: /\.js$/,
+        enforce: "pre",
+        use: ["source-map-loader"],
+      },
     ],
   },
   plugins: [

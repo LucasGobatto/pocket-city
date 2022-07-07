@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "check-circular": "npx madge --circular --ts-config ./tsconfig.json --extensions ts ."
   },
   "repository": {
     "type": "git",
@@ -24,15 +25,20 @@
   "devDependencies": {
     "@types/node": "18.0.1",
     "css-loader": "6.7.1",
-    "file-loader": "^6.2.0",
+    "file-loader": "6.2.0",
     "html-webpack-plugin": "5.5.0",
-    "style-loader": "^3.3.1",
-    "ts-loader": "^9.3.1",
+    "source-map-loader": "4.0.0",
+    "style-loader": "3.3.1",
+    "ts-loader": "9.3.1",
     "ts-node": "10.8.2",
     "tsc": "2.0.4",
     "typescript": "4.7.4",
     "webpack": "5.73.0",
     "webpack-cli": "4.10.0",
     "webpack-dev-server": "4.9.3"
+  },
+  "dependencies": {
+    "reflect-metadata": "0.1.13",
+    "typedi": "0.10.0"
   }
 }

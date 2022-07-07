@@ -1,7 +1,7 @@
 import { moneyDisplay } from "./tags";
 
 export class GameStats {
-  static gameTicker = 1000;
+  static gameTicker = 200;
   static money = 200;
   static population = 0;
 
