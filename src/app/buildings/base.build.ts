@@ -80,7 +80,6 @@ export abstract class BaseBuild implements Build {
     } else {
       alert("not enough money");
       this.setActive(false);
-      this.hasImprover = true;
     }
 
     this.updateGameMoney();
@@ -105,22 +104,13 @@ export abstract class BaseBuild implements Build {
   }
 
   private async updateGameMoney() {
-    if (this.hasImprover) {
-      this.interval = setInterval(() => {
-        GameStats.updateMoney(this.getProfite());
-
-        if (GameStats.money >= this.price) {
-          this.setActive(true);
-        }
-      }, this.animationTime * 1000);
-    } else {
-      await this.sleep();
+    this.interval = (this.hasImprover ? setInterval : setTimeout)(() => {
       GameStats.updateMoney(this.getProfite());
 
-      if (GameStats.money <= this.price) {
+      if (GameStats.money >= this.price) {
         this.setActive(true);
       }
-    }
+    }, this.animationTime * 1000);
   }
 
   private stopAnimation() {
