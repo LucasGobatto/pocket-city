@@ -5,8 +5,7 @@ export class GameStats {
   static money = 200;
   static population = 0;
 
-  static updateMoney(amount: number, where: string) {
-    console.log(where);
+  static updateMoney(amount: number) {
     GameStats.money += amount;
     moneyDisplay.innerHTML = `$ ${GameStats.money.toFixed(2)}`;
   }

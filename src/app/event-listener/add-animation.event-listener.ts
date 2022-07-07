@@ -11,11 +11,7 @@ export class AddAnimation {
 
   static removeAnimation(element: HTMLDivElement) {
     element.style.animation = "none";
-  }
-
-  static setAnimatonTime(element: HTMLDivElement, time: number) {
+    element.offsetHeight;
     element.style.animationName = "grow-slider";
-    element.style.animationIterationCount = "1";
-    element.style.animationDuration = `${time}s`;
   }
 }

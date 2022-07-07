@@ -19,8 +19,10 @@ export abstract class BaseBuild implements Build {
   private fee: number;
   private profite: number;
   private animationTime: number;
-  private hasImprover: boolean;
+  private hasImprover = false;
   public animated = false;
+
+  private interval: NodeJS.Timeout;
 
   constructor(props: BuildProps) {
     const { element } = props;
@@ -63,22 +65,29 @@ export abstract class BaseBuild implements Build {
   }
 
   addBuild() {
+    this.stopAnimation();
+
     if (GameStats.money >= this.price) {
       this.amount += 1;
-      GameStats.updateMoney(-this.price, "price");
-
-      this.price *= this.fee;
-
       if (this.amount > 1) {
-        this.animationTime *= 0.9;
-        AddAnimation.setAnimatonTime(this.slider, this.animationTime);
+        this.animationTime *= 0.95;
       }
 
+      GameStats.updateMoney(-this.price);
+      this.price *= this.fee;
+
       this.updatePriceLabel();
-      this.updateGameMoney();
     } else {
-      console.log("not enough money");
+      alert("not enough money");
       this.setActive(false);
+      this.hasImprover = true;
+    }
+
+    this.updateGameMoney();
+    AddAnimation.animate(this.slider, this.animationTime);
+
+    if (this.hasImprover) {
+      AddAnimation.setAnimationInteractionCount(this.slider, "infinite");
     }
   }
 
@@ -89,7 +98,7 @@ export abstract class BaseBuild implements Build {
 
   setActive(active: boolean) {
     if (active) {
-      this.button.setAttribute("name", "ative");
+      this.button.setAttribute("name", "active");
     } else {
       this.button.setAttribute("name", "disable");
     }
@@ -97,21 +106,32 @@ export abstract class BaseBuild implements Build {
 
   private async updateGameMoney() {
     if (this.hasImprover) {
-      // todo: fix this -> how to prevent double profite sleeps?
-      while (true) {
-        GameStats.updateMoney(this.getProfite(), "profite");
-        await this.sleep();
+      this.interval = setInterval(() => {
+        GameStats.updateMoney(this.getProfite());
+
+        if (GameStats.money >= this.price) {
+          this.setActive(true);
+        }
+      }, this.animationTime * 1000);
+    } else {
+      await this.sleep();
+      GameStats.updateMoney(this.getProfite());
+
+      if (GameStats.money <= this.price) {
+        this.setActive(true);
       }
     }
+  }
 
-    await this.sleep();
-    GameStats.updateMoney(this.getProfite(), "profite");
+  private stopAnimation() {
+    clearInterval(this.interval);
+    clearTimeout(this.interval);
     AddAnimation.removeAnimation(this.slider);
   }
 
   private async sleep(): Promise<void> {
     return new Promise((res) => {
-      setTimeout(() => res(), this.animationTime * 1000);
+      this.interval = setInterval(() => res(), this.animationTime * 1000);
     });
   }
 }
