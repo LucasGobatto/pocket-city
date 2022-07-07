@@ -2,6 +2,7 @@ export class AddAnimation {
   static animate(element: HTMLDivElement, duration: number) {
     element.style.animationName = "grow-slider";
     element.style.animationIterationCount = "1";
+    element.style.animationTimingFunction = "linear";
     element.style.animationDuration = `${duration}s`;
   }
 
