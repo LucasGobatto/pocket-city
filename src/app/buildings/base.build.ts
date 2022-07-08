@@ -21,8 +21,6 @@ export abstract class BaseBuild implements Build {
   private readonly priceLabel: HTMLParagraphElement;
   private readonly profiteLabel: HTMLDivElement;
   private readonly purchaseIcon: HTMLDivElement;
-  private readonly increaseProfiteRate: number;
-  private readonly initialProfite: number;
   private readonly icon: any;
 
   private isActive: boolean;
@@ -30,9 +28,11 @@ export abstract class BaseBuild implements Build {
   private fee: number;
   private animationTime: number;
   private interval: NodeJS.Timeout;
-
-  private amount = 1;
   private hasImprover = false;
+
+  protected readonly increaseProfiteRate: number;
+  protected initialProfite: number;
+  protected amount = 0;
 
   constructor(props: BuildProps) {
     const { element } = props;
@@ -51,8 +51,8 @@ export abstract class BaseBuild implements Build {
     this.fee = props.fee;
     this.animationTime = props.animationTime;
 
-    this.setActive(this.isActive);
     if (props.isInitialActive) {
+      this.amount += 1;
       this.updatePurchaseIcon();
     }
 
@@ -66,7 +66,7 @@ export abstract class BaseBuild implements Build {
 
   setInitialAtive() {
     if (this.isActive) {
-      throw new Error("Alread ative");
+      throw new Error("Already active");
     }
 
     this.updatePurchaseIcon();
@@ -85,7 +85,11 @@ export abstract class BaseBuild implements Build {
   }
 
   getProfite() {
-    return this.amount > 1 ? this.amount * this.initialProfite * this.increaseProfiteRate : this.initialProfite;
+    if (this.amount > 0) {
+      this.initialProfite *= this.increaseProfiteRate;
+    }
+
+    return this.initialProfite;
   }
 
   getAnimationTime() {
@@ -108,7 +112,7 @@ export abstract class BaseBuild implements Build {
 
   addBuild() {
     if (GameStats.money >= this.price) {
-      if (this.amount === 1 && !this.isActive) {
+      if (this.amount === 0 && !this.isActive) {
         this.updatePurchaseIcon();
       }
 

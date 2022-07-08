@@ -1,13 +1,17 @@
 import { Service } from "typedi";
-import { FactoryBuild, HouseBuild } from "../buildings";
+import { FactoryBuild, HouseBuild, ShopBuild } from "../buildings";
 import { Build } from "../models";
 
 @Service()
 export class AddEventListenerController {
   private readonly buildings: Build[];
 
-  constructor(private readonly houseBuild: HouseBuild, private readonly factoryBuild: FactoryBuild) {
-    this.buildings = [this.houseBuild, this.factoryBuild];
+  constructor(
+    private readonly houseBuild: HouseBuild,
+    private readonly factoryBuild: FactoryBuild,
+    private readonly shopBuild: ShopBuild
+  ) {
+    this.buildings = [this.houseBuild, this.factoryBuild, this.shopBuild];
   }
 
   addEventListeners() {

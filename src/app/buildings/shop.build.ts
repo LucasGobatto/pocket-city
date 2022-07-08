@@ -5,16 +5,16 @@ import { BaseBuild } from "./base.build";
 import { initialProfiteRate, initialPrice, initialFee } from "./constants";
 
 @Service()
-export class FactoryBuild extends BaseBuild {
+export class ShopBuild extends BaseBuild {
   constructor() {
     super({
-      animationTime: 10,
-      element: BuildNames.factory,
-      fee: initialFee.factory,
-      price: initialPrice.factory,
-      initialProfite: 15,
-      increaseProfiteRate: initialProfiteRate.factory,
-      icon: BuildingIcons.factory,
+      element: BuildNames.shop,
+      price: initialPrice.shop,
+      initialProfite: 120,
+      increaseProfiteRate: initialProfiteRate.shop,
+      fee: initialFee.shop,
+      animationTime: 30,
+      icon: BuildingIcons.shop,
     });
   }
 }

@@ -2,19 +2,24 @@ import { Service } from "typedi";
 import { BuildingIcons } from "../../assets";
 import { BuildNames } from "../models";
 import { BaseBuild } from "./base.build";
+import { initialProfiteRate, initialPrice, initialFee } from "./constants";
 
 @Service()
 export class HouseBuild extends BaseBuild {
   constructor() {
     super({
       element: BuildNames.house,
-      price: 5,
+      price: initialPrice.house,
       initialProfite: 1,
-      increaseProfiteRate: 1,
-      fee: 1.069,
+      increaseProfiteRate: initialProfiteRate.house,
+      fee: initialFee.house,
       animationTime: 3,
       icon: BuildingIcons.house,
       isInitialActive: true,
     });
+  }
+
+  getProfite() {
+    return this.amount > 1 ? this.amount * this.initialProfite * this.increaseProfiteRate : this.initialProfite;
   }
 }
