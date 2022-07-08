@@ -2,13 +2,17 @@ import Container from "typedi";
 import { AddAnimation } from "../event-listener/add-animation.event-listener";
 import { GameStats } from "../game-stats";
 import { Build, BuildNames } from "../models";
+import { getPastMoney } from "../utils/get-past-money";
 
 interface BuildProps {
   element: BuildNames;
   price: number;
-  profite: number;
+  initialProfite: number;
+  increaseProfiteRate: number;
   fee: number;
   animationTime: number;
+  icon: string;
+  isInitialActive?: boolean;
 }
 
 export abstract class BaseBuild implements Build {
@@ -17,15 +21,18 @@ export abstract class BaseBuild implements Build {
   private readonly priceLabel: HTMLParagraphElement;
   private readonly profiteLabel: HTMLDivElement;
   private readonly purchaseIcon: HTMLDivElement;
+  private readonly increaseProfiteRate: number;
+  private readonly initialProfite: number;
+  private readonly icon: any;
+
+  private isActive: boolean;
   private price: number;
-  private amount = 0;
   private fee: number;
-  private profite: number;
   private animationTime: number;
-  private hasImprover = false;
   private interval: NodeJS.Timeout;
 
-  public animated = false;
+  private amount = 1;
+  private hasImprover = false;
 
   constructor(props: BuildProps) {
     const { element } = props;
@@ -35,30 +42,42 @@ export abstract class BaseBuild implements Build {
     this.profiteLabel = document.querySelector(`.profite-label#${element}-profite`);
     this.purchaseIcon = document.querySelector(`.purchase-icon#${element}`);
 
+    this.initialProfite = props.initialProfite;
+    this.increaseProfiteRate = props.increaseProfiteRate;
+
+    this.isActive = props.isInitialActive;
+    this.icon = props.icon;
     this.price = props.price;
-    this.profite = props.profite;
     this.fee = props.fee;
     this.animationTime = props.animationTime;
 
-    this.updatePriceLabel();
-    this.setProfitLabel();
-    this.setActive(this.price <= GameStats.money);
-  }
-
-  getPrice() {
-    return this.price;
-  }
-
-  setAnimation() {
-    if (this.animated) {
-      throw new Error("Build already in animation");
+    this.setActive(this.isActive);
+    if (props.isInitialActive) {
+      this.updatePurchaseIcon();
     }
 
-    this.animated = true;
+    this.updatePriceLabel();
+    this.updateProfiteLabel();
   }
 
   setImprover(active: boolean) {
     this.hasImprover = active;
+  }
+
+  setInitialAtive() {
+    if (this.isActive) {
+      throw new Error("Alread ative");
+    }
+
+    this.updatePurchaseIcon();
+  }
+
+  getPurchaseIconButton() {
+    return this.purchaseIcon;
+  }
+
+  getPrice() {
+    return this.price;
   }
 
   getButton() {
@@ -66,11 +85,7 @@ export abstract class BaseBuild implements Build {
   }
 
   getProfite() {
-    return this.price * this.profite;
-  }
-
-  setProfitLabel() {
-    this.profiteLabel.innerHTML = `$ ${this.getProfite().toFixed(2)}`;
+    return this.amount > 1 ? this.amount * this.initialProfite * this.increaseProfiteRate : this.initialProfite;
   }
 
   getAnimationTime() {
@@ -81,16 +96,23 @@ export abstract class BaseBuild implements Build {
     return this.slider;
   }
 
-  setIcon() {
-    this.purchaseIcon.innerHTML = this.amount.toString();
+  getMoney() {
+    if (this.isActive) {
+      if (this.interval) {
+        return;
+      }
+
+      this.updateGameMoney();
+    }
   }
 
   addBuild() {
     if (GameStats.money >= this.price) {
-      this.stopAnimation();
+      if (this.amount === 1 && !this.isActive) {
+        this.updatePurchaseIcon();
+      }
 
       this.amount += 1;
-      this.setIcon();
 
       if (this.amount > 1) {
         this.animationTime *= 0.95;
@@ -98,29 +120,18 @@ export abstract class BaseBuild implements Build {
 
       GameStats.updateMoney(-this.price);
       this.price *= this.fee;
-      AddAnimation.animate(this.slider, this.animationTime);
 
       if (GameStats.money < this.price) {
         this.setActive(false);
       }
 
-      this.setProfitLabel();
+      this.updateProfiteLabel();
       this.updatePriceLabel();
-      this.updateGameMoney();
     } else {
       console.log("not enough money");
+
       this.setActive(false);
-
-      if (this.hasImprover) {
-        AddAnimation.setAnimationInteractionCount(this.slider, "infinite");
-        this.updateGameMoney();
-      }
     }
-  }
-
-  updatePriceLabel() {
-    this.priceLabel.innerHTML = `$ ${this.price.toFixed(2)}`;
-    return this;
   }
 
   setActive(active: boolean) {
@@ -132,16 +143,35 @@ export abstract class BaseBuild implements Build {
   }
 
   private async updateGameMoney() {
+    AddAnimation.animate(this.slider, this.animationTime);
     this.interval = (this.hasImprover ? setInterval : setTimeout)(() => {
       GameStats.updateMoney(this.getProfite());
 
       this.setActive(GameStats.money >= this.price);
+
+      this.stopAnimation();
+      this.interval = null;
     }, this.animationTime * 1000);
   }
 
+  private updatePriceLabel() {
+    this.priceLabel.innerHTML = `$ ${this.price.toFixed(2)}`;
+  }
+
+  private updateProfiteLabel() {
+    this.profiteLabel.innerHTML = `$ ${this.getProfite().toFixed(2)}`;
+  }
+
+  private updatePurchaseIcon() {
+    const image = new Image(50, 50);
+    image.src = this.icon;
+    this.purchaseIcon.style.cursor = "pointer";
+
+    this.purchaseIcon.appendChild(image);
+    this.isActive = true;
+  }
+
   private stopAnimation() {
-    clearInterval(this.interval);
-    clearTimeout(this.interval);
     AddAnimation.removeAnimation(this.slider);
   }
 }

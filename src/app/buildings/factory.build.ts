@@ -1,4 +1,5 @@
 import { Service } from "typedi";
+import { BuildingIcons } from "../../assets";
 import { BuildNames } from "../models";
 import { BaseBuild } from "./base.build";
 
@@ -8,9 +9,11 @@ export class FactoryBuild extends BaseBuild {
     super({
       animationTime: 10,
       element: BuildNames.factory,
-      fee: 1.4,
+      fee: 1.088,
       price: 50,
-      profite: 1.2,
+      initialProfite: 15,
+      increaseProfiteRate: 1.02,
+      icon: BuildingIcons.factory,
     });
   }
 }

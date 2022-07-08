@@ -13,6 +13,5 @@ export class AddAnimation {
   static removeAnimation(element: HTMLDivElement) {
     element.style.animation = "none";
     element.offsetHeight;
-    element.style.animationName = "grow-slider";
   }
 }

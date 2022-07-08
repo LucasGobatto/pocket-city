@@ -1,7 +1,6 @@
 import { Service } from "typedi";
 import { FactoryBuild, HouseBuild } from "../buildings";
 import { Build } from "../models";
-import { AddAnimation } from "./add-animation.event-listener";
 
 @Service()
 export class AddEventListenerController {
@@ -14,12 +13,11 @@ export class AddEventListenerController {
   addEventListeners() {
     this.buildings.forEach((build) => {
       build.getButton().addEventListener("click", () => {
-        if (!build.animated) {
-          AddAnimation.animate(build.getSlider(), build.getAnimationTime());
-          build.setAnimation();
-        }
-
         build.addBuild();
+      });
+
+      build.getPurchaseIconButton().addEventListener("click", () => {
+        build.getMoney();
       });
     });
   }

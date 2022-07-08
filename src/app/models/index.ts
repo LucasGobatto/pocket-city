@@ -4,14 +4,15 @@ export interface CityStatus {
 }
 
 export interface Build {
-  animated: boolean;
-  setAnimation: () => void;
+  setImprover: (active: boolean) => void;
+  getPrice: () => number;
   getButton: () => HTMLButtonElement;
   getProfite: () => number;
+  getPurchaseIconButton: () => HTMLDivElement;
   getAnimationTime: () => number;
   getSlider: () => HTMLDivElement;
+  getMoney: () => void;
   addBuild: () => void;
-  updatePriceLabel: () => this;
 }
 
 export enum BuildNames {

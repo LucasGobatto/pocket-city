@@ -1,5 +1,4 @@
 export const moneyDisplay = document.querySelector(".wallet-money");
-export const weekProfite = document.querySelector(".week-profite");
 export const currentDayDisplay = document.querySelector(".current-day");
 export const populationDisplay = document.querySelector(".population");
 
