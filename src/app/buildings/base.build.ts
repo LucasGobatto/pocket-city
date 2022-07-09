@@ -1,8 +1,8 @@
-import Container from "typedi";
 import { AddAnimation } from "../event-listener/add-animation.event-listener";
 import { GameStats } from "../game-stats";
 import { Build, BuildNames } from "../models";
-import { getPastMoney } from "../utils/get-past-money";
+import { setElementActive } from "../utils";
+import { moneyFormater } from "../utils/money-formater";
 
 interface BuildProps {
   element: BuildNames;
@@ -18,9 +18,13 @@ interface BuildProps {
 export abstract class BaseBuild implements Build {
   private readonly slider: HTMLDivElement;
   private readonly button: HTMLButtonElement;
+  private readonly multipleButton: HTMLButtonElement;
   private readonly priceLabel: HTMLParagraphElement;
   private readonly profiteLabel: HTMLDivElement;
-  private readonly purchaseIcon: HTMLDivElement;
+  private readonly buildingIcon: HTMLDivElement;
+  private readonly progressBar: HTMLDivElement;
+  private readonly buildingAmountLabel: HTMLParagraphElement;
+  private readonly baseProgress = [10, 20, 50, 100, 150, 200, 300, 400, 500, 750, 1000];
   private readonly icon: any;
 
   private isActive: boolean;
@@ -36,11 +40,14 @@ export abstract class BaseBuild implements Build {
 
   constructor(props: BuildProps) {
     const { element } = props;
-    this.slider = document.querySelector(`.slider#${element}-slider`);
+    this.slider = document.querySelector(`.animated-slider#${element}-slider`);
     this.button = document.querySelector(`#${element}-button`);
-    this.priceLabel = document.querySelector(`.purchase-price#${element}-price`);
+    this.multipleButton = document.querySelector(`.building-amount#${element}`);
+    this.priceLabel = document.querySelector(`.price-label#${element}-price`);
     this.profiteLabel = document.querySelector(`.profite-label#${element}-profite`);
-    this.purchaseIcon = document.querySelector(`.purchase-icon#${element}`);
+    this.buildingIcon = document.querySelector(`.building-icon#${element}`);
+    this.progressBar = document.querySelector(`.animated-progress-bar#${element}`);
+    this.buildingAmountLabel = document.querySelector(`.building-amount#${element}`);
 
     this.initialProfite = props.initialProfite;
     this.increaseProfiteRate = props.increaseProfiteRate;
@@ -58,6 +65,8 @@ export abstract class BaseBuild implements Build {
 
     this.updatePriceLabel();
     this.updateProfiteLabel();
+    this.updateCurrentProgress();
+    this.updateBuildingAmountLabel();
   }
 
   setImprover(active: boolean) {
@@ -72,8 +81,12 @@ export abstract class BaseBuild implements Build {
     this.updatePurchaseIcon();
   }
 
+  getProgressBar() {
+    return this.progressBar;
+  }
+
   getPurchaseIconButton() {
-    return this.purchaseIcon;
+    return this.buildingIcon;
   }
 
   getPrice() {
@@ -126,24 +139,36 @@ export abstract class BaseBuild implements Build {
       this.price *= this.fee;
 
       if (GameStats.money < this.price) {
-        this.setActive(false);
+        setElementActive(this.button, false);
       }
 
+      this.updateCurrentProgress();
+      this.updateBuildingAmountLabel();
       this.updateProfiteLabel();
       this.updatePriceLabel();
     } else {
       console.log("not enough money");
 
-      this.setActive(false);
+      setElementActive(this.button, false);
     }
   }
 
-  setActive(active: boolean) {
-    if (active) {
-      this.button.setAttribute("name", "active");
-    } else {
-      this.button.setAttribute("name", "disable");
-    }
+  private updateCurrentProgress() {
+    const progress = this.baseProgress.findIndex((progress, index) => {
+      if (index === 0) {
+        return this.amount <= progress;
+      }
+      return this.amount <= progress && this.amount >= this.baseProgress[index - 1];
+    });
+
+    const previousProgress = this.baseProgress[progress - 1];
+    const currentProgress = this.baseProgress[progress];
+    const currentProgressPercentage =
+      (previousProgress
+        ? (this.amount - previousProgress) / (currentProgress - previousProgress)
+        : this.amount / currentProgress) * 100;
+
+    AddAnimation.editProgressWidth(this.progressBar, currentProgressPercentage);
   }
 
   private async updateGameMoney() {
@@ -151,7 +176,7 @@ export abstract class BaseBuild implements Build {
     this.interval = (this.hasImprover ? setInterval : setTimeout)(() => {
       GameStats.updateMoney(this.getProfite());
 
-      this.setActive(GameStats.money >= this.price);
+      setElementActive(this.button, GameStats.money >= this.price);
 
       this.stopAnimation();
       this.interval = null;
@@ -159,19 +184,23 @@ export abstract class BaseBuild implements Build {
   }
 
   private updatePriceLabel() {
-    this.priceLabel.innerHTML = `$ ${this.price.toFixed(2)}`;
+    this.priceLabel.innerHTML = `$ ${moneyFormater(this.price)}`;
   }
 
   private updateProfiteLabel() {
-    this.profiteLabel.innerHTML = `$ ${this.getProfite().toFixed(2)}`;
+    this.profiteLabel.innerHTML = `$ ${moneyFormater(this.getProfite())}`;
+  }
+
+  private updateBuildingAmountLabel() {
+    this.buildingAmountLabel.innerHTML = `${this.amount}`;
   }
 
   private updatePurchaseIcon() {
     const image = new Image(50, 50);
     image.src = this.icon;
-    this.purchaseIcon.style.cursor = "pointer";
+    this.buildingIcon.style.cursor = "pointer";
 
-    this.purchaseIcon.appendChild(image);
+    this.buildingIcon.appendChild(image);
     this.isActive = true;
   }
 

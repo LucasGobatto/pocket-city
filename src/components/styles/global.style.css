@@ -1,11 +1,19 @@
 * {
   display: block;
   box-sizing: border-box;
+  margin: 0;
   padding: 0;
-  padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;  
 }
 
 style {
   display: none;
+}
+
+:root {
+  --primary: #314f35;
+  --secondary: #57915f;
+  --white: #f3f3f3;
+  --black: rgba(0, 0, 0, 0.3);
+  --alternative: #890165;
 }

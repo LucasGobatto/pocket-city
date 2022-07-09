@@ -14,4 +14,8 @@ export class AddAnimation {
     element.style.animation = "none";
     element.offsetHeight;
   }
+
+  static editProgressWidth(element: HTMLDivElement, progress: number) {
+    element.style.width = `${progress}%`;
+  }
 }

@@ -1,4 +1,5 @@
 import { moneyDisplay } from "./tags";
+import { moneyFormater } from "./utils/money-formater";
 
 export class GameStats {
   static gameTicker = 200;
@@ -7,6 +8,6 @@ export class GameStats {
 
   static updateMoney(amount: number) {
     GameStats.money += amount;
-    moneyDisplay.innerHTML = `$ ${GameStats.money.toFixed(2)}`;
+    moneyDisplay.innerHTML = `$ ${moneyFormater(GameStats.money)}`;
   }
 }

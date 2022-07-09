@@ -5,7 +5,7 @@ export const initialProfiteRate = {
 };
 
 export const initialPrice = {
-  house: 5,
+  house: 0,
   factory: 50,
   shop: 1000,
 };
