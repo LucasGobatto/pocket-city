@@ -15,6 +15,9 @@ interface BuildProps {
   isInitialActive?: boolean;
 }
 
+const multiplePurchaseValues = [1, 10, 100];
+const baseProgress = [10, 20, 50, 100, 150, 200, 300, 400, 500, 750, 1000];
+
 export abstract class BaseBuild implements Build {
   private readonly slider: HTMLDivElement;
   private readonly button: HTMLButtonElement;
@@ -24,15 +27,17 @@ export abstract class BaseBuild implements Build {
   private readonly buildingIcon: HTMLDivElement;
   private readonly progressBar: HTMLDivElement;
   private readonly buildingAmountLabel: HTMLParagraphElement;
-  private readonly baseProgress = [10, 20, 50, 100, 150, 200, 300, 400, 500, 750, 1000];
   private readonly icon: any;
 
+  private currentProgressLevel = baseProgress[0];
+  private currentPurchaseValues = 0;
   private isActive: boolean;
   private price: number;
   private fee: number;
   private animationTime: number;
   private interval: NodeJS.Timeout;
   private hasImprover = false;
+  private ephemeralPrice: number;
 
   protected readonly increaseProfiteRate: number;
   protected initialProfite: number;
@@ -42,7 +47,7 @@ export abstract class BaseBuild implements Build {
     const { element } = props;
     this.slider = document.querySelector(`.animated-slider#${element}-slider`);
     this.button = document.querySelector(`#${element}-button`);
-    this.multipleButton = document.querySelector(`.building-amount#${element}`);
+    this.multipleButton = document.querySelector(`.mutiplier-button#${element}`);
     this.priceLabel = document.querySelector(`.price-label#${element}-price`);
     this.profiteLabel = document.querySelector(`.profite-label#${element}-profite`);
     this.buildingIcon = document.querySelector(`.building-icon#${element}`);
@@ -67,18 +72,29 @@ export abstract class BaseBuild implements Build {
     this.updateProfiteLabel();
     this.updateCurrentProgress();
     this.updateBuildingAmountLabel();
+    this.updateMultiplePurchaseValue();
+  }
+
+  observerMoneyAndSetActive() {
+    this.setEphemeralPrice();
+
+    setElementActive(this.button, GameStats.money >= this.ephemeralPrice);
   }
 
   setImprover(active: boolean) {
     this.hasImprover = active;
   }
 
-  setInitialAtive() {
+  setInitialActive() {
     if (this.isActive) {
       throw new Error("Already active");
     }
 
     this.updatePurchaseIcon();
+  }
+
+  getMultiplePurchaseButton() {
+    return this.multipleButton;
   }
 
   getProgressBar() {
@@ -98,11 +114,12 @@ export abstract class BaseBuild implements Build {
   }
 
   getProfite() {
-    if (this.amount > 0) {
-      this.initialProfite *= this.increaseProfiteRate;
+    let amount = this.amount;
+    if (this.amount > 1) {
+      amount += multiplePurchaseValues[this.currentPurchaseValues] - 1;
     }
 
-    return this.initialProfite;
+    return this.getProfiteRecursion(amount);
   }
 
   getAnimationTime() {
@@ -123,50 +140,71 @@ export abstract class BaseBuild implements Build {
     }
   }
 
+  setMultiplePurchaseValue() {
+    if (this.currentPurchaseValues === multiplePurchaseValues.length - 1) {
+      this.currentPurchaseValues = 0;
+    } else {
+      this.currentPurchaseValues += 1;
+    }
+
+    this.setEphemeralPrice();
+    this.updateMultiplePurchaseValue();
+    this.observerMoneyAndSetActive();
+    this.updatePriceLabel(this.ephemeralPrice);
+  }
+
   addBuild() {
-    if (GameStats.money >= this.price) {
+    this.setEphemeralPrice();
+
+    if (GameStats.money >= this.ephemeralPrice) {
       if (this.amount === 0 && !this.isActive) {
         this.updatePurchaseIcon();
       }
 
-      this.amount += 1;
+      GameStats.updateMoney(-this.ephemeralPrice);
 
-      if (this.amount > 1) {
-        this.animationTime *= 0.95;
-      }
+      this.amount += multiplePurchaseValues[this.currentPurchaseValues];
 
-      GameStats.updateMoney(-this.price);
-      this.price *= this.fee;
+      const currentFee = Math.pow(this.fee, multiplePurchaseValues[this.currentPurchaseValues]);
+      const currentPrice = this.price * currentFee;
+      this.price = currentPrice;
 
-      if (GameStats.money < this.price) {
+      this.setEphemeralPrice();
+      if (GameStats.money < this.ephemeralPrice) {
         setElementActive(this.button, false);
       }
 
       this.updateCurrentProgress();
       this.updateBuildingAmountLabel();
       this.updateProfiteLabel();
-      this.updatePriceLabel();
+      this.updatePriceLabel(this.ephemeralPrice);
+      this.observerMoneyAndSetActive();
     } else {
       console.log("not enough money");
 
-      setElementActive(this.button, false);
+      this.observerMoneyAndSetActive();
     }
   }
 
   private updateCurrentProgress() {
-    const progress = this.baseProgress.findIndex((progress, index) => {
+    const progress = baseProgress.findIndex((progress, index) => {
       if (index === 0) {
-        return this.amount <= progress;
+        return this.amount < progress;
       }
-      return this.amount <= progress && this.amount >= this.baseProgress[index - 1];
+      return this.amount < progress && this.amount >= baseProgress[index - 1];
     });
 
-    const previousProgress = this.baseProgress[progress - 1];
-    const currentProgress = this.baseProgress[progress];
+    const previousProgress = baseProgress[progress - 1];
+    const currentProgress = baseProgress[progress];
     const currentProgressPercentage =
       (previousProgress
         ? (this.amount - previousProgress) / (currentProgress - previousProgress)
         : this.amount / currentProgress) * 100;
+
+    if (this.currentProgressLevel !== currentProgress) {
+      this.animationTime *= 0.7;
+      this.currentProgressLevel = currentProgress;
+    }
 
     AddAnimation.editProgressWidth(this.progressBar, currentProgressPercentage);
   }
@@ -176,15 +214,14 @@ export abstract class BaseBuild implements Build {
     this.interval = (this.hasImprover ? setInterval : setTimeout)(() => {
       GameStats.updateMoney(this.getProfite());
 
-      setElementActive(this.button, GameStats.money >= this.price);
-
+      this.observerMoneyAndSetActive();
       this.stopAnimation();
       this.interval = null;
     }, this.animationTime * 1000);
   }
 
-  private updatePriceLabel() {
-    this.priceLabel.innerHTML = `$ ${moneyFormater(this.price)}`;
+  private updatePriceLabel(ephemeralPrice?: number) {
+    this.priceLabel.innerHTML = `$ ${moneyFormater(ephemeralPrice ?? this.getPrice())}`;
   }
 
   private updateProfiteLabel() {
@@ -195,16 +232,35 @@ export abstract class BaseBuild implements Build {
     this.buildingAmountLabel.innerHTML = `${this.amount}`;
   }
 
+  private updateMultiplePurchaseValue() {
+    this.multipleButton.innerHTML = `x ${multiplePurchaseValues[this.currentPurchaseValues]}`;
+  }
+
   private updatePurchaseIcon() {
     const image = new Image(50, 50);
     image.src = this.icon;
     this.buildingIcon.style.cursor = "pointer";
 
     this.buildingIcon.appendChild(image);
+    this.buildingIcon.setAttribute("id", "active");
     this.isActive = true;
   }
 
   private stopAnimation() {
     AddAnimation.removeAnimation(this.slider);
+  }
+
+  private setEphemeralPrice() {
+    const amount = multiplePurchaseValues[this.currentPurchaseValues];
+
+    this.ephemeralPrice = [...new Array(amount)].map(() => this.price).reduce((prev, cct) => (cct += prev * this.fee), 0);
+  }
+
+  private getProfiteRecursion(amount: number): number {
+    if (amount === 0) {
+      return this.initialProfite;
+    } else {
+      return this.increaseProfiteRate * this.getProfiteRecursion(amount - 1);
+    }
   }
 }

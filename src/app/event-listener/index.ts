@@ -23,6 +23,10 @@ export class AddEventListenerController {
       build.getPurchaseIconButton().addEventListener("click", () => {
         build.getMoney();
       });
+
+      build.getMultiplePurchaseButton().addEventListener("click", () => {
+        build.setMultiplePurchaseValue();
+      });
     });
   }
 }

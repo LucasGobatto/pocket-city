@@ -18,8 +18,15 @@
   padding: 1px 1px 0 0 ;
   border: var(--primary) solid 2px;
   border-radius: 20px 20px 0 0 ;
-  cursor: pointer;
   overflow: hidden;
+}
+
+.building-icon#active {
+  cursor: pointer;
+}
+
+.building-icon#active:hover {
+  background-color: var(--secondary);
 }
 
 .slider-wrapper {

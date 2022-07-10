@@ -2,7 +2,6 @@ import { Service } from "typedi";
 import { FactoryBuild, HouseBuild, ShopBuild } from "./buildings";
 import { AddEventListenerController } from "./event-listener";
 import { GameStats } from "./game-stats";
-import { setElementActive } from "./utils";
 
 @Service()
 export class PocketCityGame {
@@ -18,19 +17,9 @@ export class PocketCityGame {
 
   async run() {
     setInterval(() => {
-      const housePrice = this.houseBuild.getPrice();
-      const factoryPrice = this.factoryBuild.getPrice();
-      const shopPrice = this.shopBuild.getPrice();
-
-      const gameMoney = GameStats.money;
-
-      const houseButton = this.houseBuild.getButton();
-      const factoryButton = this.factoryBuild.getButton();
-      const shopButton = this.shopBuild.getButton();
-
-      setElementActive(houseButton, housePrice <= gameMoney);
-      setElementActive(factoryButton, factoryPrice <= gameMoney);
-      setElementActive(shopButton, shopPrice <= gameMoney);
+      this.houseBuild.observerMoneyAndSetActive();
+      this.factoryBuild.observerMoneyAndSetActive();
+      this.shopBuild.observerMoneyAndSetActive();
     }, GameStats.gameTicker);
   }
 }
