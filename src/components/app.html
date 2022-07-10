@@ -10,8 +10,8 @@
     <main class="display-wrapper">
       <h1>POCKET CITY</h1>
       <div class="wallet-money">$ 0.00</div>
-      <div class="population">Population: 0</div>
     </main>
+    <div class="separator"></div>
 
     <div class="purchase-wrapper">
       <div class="building-container">
@@ -108,6 +108,7 @@
             <p class="price-label" id="public-transport-price"></p>
           </div>
           <div class="button-container">
+            <div class="profite-label" id="public-transport-profite"></div>
             <button class="pucharse-button" id="public-transport-button" name="disable">Buy Public Transport</button>
             <button class="mutiplier-button" id="public-transport"></button>
           </div>
@@ -127,57 +128,91 @@
             <p class="price-label" id="usine-price"></p>
           </div>
           <div class="button-container">
+            <div class="profite-label" id="usine-profite"></div>
             <button class="pucharse-button" id="usine-button" name="disable">Buy Usine</button>
             <button class="mutiplier-button" id="usine" id="usine"></button>
           </div>
         </div>
       </div>
-    </div>
-    <div class="div" style="display: none">
-      <div class="purchase-button-container">
-        <div class="purchase-icon" id="usine"></div>
-        <button class="purchase-button" id="usine-button" name="disable">Buy Usine</button>
-        <div class="slider-wrapper" id="usine-slider">
-          <p class="purchase-price" id="usine-price"></p>
-          <div class="slider" id="usine-slider"></div>
+      <div class="building-container">
+        <div class="building-icon-wrapper">
+          <div class="building-icon" id="church"></div>
+          <div class="progress-bar-wrapper">
+            <div class="animated-progress-bar" id="church"></div>
+            <p class="building-amount" id="church"></p>
+          </div>
         </div>
-        <div class="profite-label" id="usine-profite"></div>
+        <div class="slider-wrapper">
+          <div class="slider">
+            <div class="animated-slider" id="church-slider"></div>
+            <p class="price-label" id="church-price"></p>
+          </div>
+          <div class="button-container">
+            <div class="profite-label" id="church-profite"></div>
+            <button class="pucharse-button" id="church-button" name="disable">Buy Church</button>
+            <button class="mutiplier-button" id="church" id="church"></button>
+          </div>
+        </div>
       </div>
-      <div class="purchase-button-container">
-        <div class="purchase-icon" id="church"></div>
-        <button class="purchase-button" id="church-button" name="disable">Buy Church</button>
-        <div class="slider-wrapper" id="church-slider">
-          <p class="purchase-price" id="church-price"></p>
-          <div class="slider" id="church-slider"></div>
+      <div class="building-container">
+        <div class="building-icon-wrapper">
+          <div class="building-icon" id="mall"></div>
+          <div class="progress-bar-wrapper">
+            <div class="animated-progress-bar" id="mall"></div>
+            <p class="building-amount" id="mall"></p>
+          </div>
         </div>
-        <div class="profite-label" id="church-profite"></div>
+        <div class="slider-wrapper">
+          <div class="slider">
+            <div class="animated-slider" id="mall-slider"></div>
+            <p class="price-label" id="mall-price"></p>
+          </div>
+          <div class="button-container">
+            <div class="profite-label" id="mall-profite"></div>
+            <button class="pucharse-button" id="mall-button" name="disable">Buy Mall</button>
+            <button class="mutiplier-button" id="mall" id="mall"></button>
+          </div>
+        </div>
       </div>
-      <div class="purchase-button-container">
-        <div class="purchase-icon" id="mall"></div>
-        <button class="purchase-button" id="mall-button" name="disable">Buy Mall</button>
-        <div class="slider-wrapper" id="mall-slider">
-          <p class="purchase-price" id="mall-price"></p>
-          <div class="slider" id="mall-slider"></div>
+      <div class="building-container">
+        <div class="building-icon-wrapper">
+          <div class="building-icon" id="airport"></div>
+          <div class="progress-bar-wrapper">
+            <div class="animated-progress-bar" id="airport"></div>
+            <p class="building-amount" id="airport"></p>
+          </div>
         </div>
-        <div class="profite-label" id="mall-profite"></div>
+        <div class="slider-wrapper">
+          <div class="slider">
+            <div class="animated-slider" id="airport-slider"></div>
+            <p class="price-label" id="airport-price"></p>
+          </div>
+          <div class="button-container">
+            <div class="profite-label" id="airport-profite"></div>
+            <button class="pucharse-button" id="airport-button" name="disable">Buy Airport</button>
+            <button class="mutiplier-button" id="airport" id="airport"></button>
+          </div>
+        </div>
       </div>
-      <div class="purchase-button-container">
-        <div class="purchase-icon" id="airport"></div>
-        <button class="purchase-button" id="airport-button" name="disable">Buy Airport</button>
-        <div class="slider-wrapper" id="airport-slider">
-          <p class="purchase-price" id="airport-price"></p>
-          <div class="slider" id="airport-slider"></div>
+      <div class="building-container">
+        <div class="building-icon-wrapper">
+          <div class="building-icon" id="city-hall"></div>
+          <div class="progress-bar-wrapper">
+            <div class="animated-progress-bar" id="city-hall"></div>
+            <p class="building-amount" id="city-hall"></p>
+          </div>
         </div>
-        <div class="profite-label" id="airport-profite"></div>
-      </div>
-      <div class="purchase-button-container">
-        <div class="purchase-icon" id="city-hall"></div>
-        <button class="purchase-button" id="city-hall-button" name="disable">Buy City Hall</button>
-        <div class="slider-wrapper" id="city-hall-slider">
-          <p class="purchase-price" id="city-hall-price"></p>
-          <div class="slider" id="city-hall-slider"></div>
+        <div class="slider-wrapper">
+          <div class="slider">
+            <div class="animated-slider" id="city-hall-slider"></div>
+            <p class="price-label" id="city-hall-price"></p>
+          </div>
+          <div class="button-container">
+            <div class="profite-label" id="city-hall-profite"></div>
+            <button class="pucharse-button" id="city-hall-button" name="disable">Buy City Hall</button>
+            <button class="mutiplier-button" id="city-hall" id="city-hall"></button>
+          </div>
         </div>
-        <div class="profite-label" id="city-hall-profite"></div>
       </div>
     </div>
   </body>
