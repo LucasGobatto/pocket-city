@@ -1,0 +1,27 @@
+.menu {
+  background-color: var(--secondary);
+  height: 50px;
+  width: 100%;
+  margin-bottom: 25px;
+  display: flex;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 100%;
+  border-right: 2px solid var(--white);
+  color: var(--white);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.menu-item:hover {
+  background-color: var(--white);
+  border: 2px solid var(--secondary);
+  color: var(--secondary);
+}
+

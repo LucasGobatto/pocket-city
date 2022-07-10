@@ -68,7 +68,7 @@
   height: 40px;
 }
 
-button {
+.purchase-button, .multiplier-button {
   background-color: var(--secondary);
   color: var(--white);
   border: var(--secondary) solid 2px;

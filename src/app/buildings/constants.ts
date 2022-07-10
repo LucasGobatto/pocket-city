@@ -21,3 +21,5 @@ export const initialProfite = {
   factory: 54,
   shop: 1200,
 };
+
+export const improversValues = [1000, 10000, 15000];

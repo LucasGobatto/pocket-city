@@ -5,13 +5,79 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title style="display: none">Pocket City</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet" />
   </head>
   <body>
     <main class="display-wrapper">
       <h1>POCKET CITY</h1>
       <div class="wallet-money">$ 0.00</div>
     </main>
-    <div class="separator"></div>
+    <ul class="menu">
+      <li class="menu-item" id="maintainers"><a>Maintainers</a></li>
+      <li class="menu-item" id="upgrades"><a>Upgrades</a></li>
+    </ul>
+
+    <div class="maintainers-wrapper">
+      <button class="close-menu">+</button>
+      <header class="maintainers-header">
+        <h2 class="maintainer-title">Maintainers</h2>
+        <p class="maintainer-description">
+          Hire some maintainers to keep your buildings working for you and increase them profites.
+        </p>
+      </header>
+      <div class="separator"></div>
+      <section class="maintainers-card-wrapper">
+        <ul>
+          <li class="maintainer-card">
+            <img src="../assets/factory-1-icon.png" alt="maintainer-icon-1" />
+            <div class="card-description-wrapper">
+              <h4 class="maintainer-card-title">Maintainer Card Title 1</h4>
+              <p class="maintainer-card-description">This is a brief description about maintainer card 1.</p>
+              <p class="maintainer-card-price">$ 700.00</p>
+            </div>
+            <button class="maintainer-button">Buy</button>
+          </li>
+          <li class="maintainer-card">
+            <img src="../assets/factory-2-icon.png" alt="maintainer-icon-2" />
+            <div class="card-description-wrapper">
+              <h4 class="maintainer-card-title">Maintainer Card Title 2</h4>
+              <p class="maintainer-card-description">This is a brief description about maintainer card 2.</p>
+              <p class="maintainer-card-price">$ 1000.00</p>
+            </div>
+            <button class="maintainer-button">Buy</button>
+          </li>
+          <li class="maintainer-card">
+            <img src="../assets/factory-3-icon.png" alt="maintainer-icon-3" />
+            <div class="card-description-wrapper">
+              <h4 class="maintainer-card-title">Maintainer Card Title 3</h4>
+              <p class="maintainer-card-description">This is a brief description about maintainer card 3.</p>
+              <p class="maintainer-card-price">$ 5000.00</p>
+            </div>
+            <button class="maintainer-button">Buy</button>
+          </li>
+          <li class="maintainer-card">
+            <img src="../assets/factory-4-icon.png" alt="maintainer-icon-4" />
+            <div class="card-description-wrapper">
+              <h4 class="maintainer-card-title">Maintainer Card Title 4</h4>
+              <p class="maintainer-card-description">This is a brief description about maintainer card 4.</p>
+              <p class="maintainer-card-price">$ 10000.00</p>
+            </div>
+            <button class="maintainer-button">Buy</button>
+          </li>
+          <li class="maintainer-card">
+            <img src="../assets/factory-5-icon.png" alt="maintainer-icon-5" />
+            <div class="card-description-wrapper">
+              <h4 class="maintainer-card-title">Maintainer Card Title 5</h4>
+              <p class="maintainer-card-description">This is a brief description about maintainer card 5.</p>
+              <p class="maintainer-card-price">$ 15000.00</p>
+            </div>
+            <button class="maintainer-button">Buy</button>
+          </li>
+        </ul>
+      </section>
+    </div>
 
     <div class="purchase-wrapper">
       <div class="building-container">
@@ -29,8 +95,8 @@
           </div>
           <div class="button-container">
             <div class="profite-label" id="house-profite"></div>
-            <button class="pucharse-button" id="house-button" name="disable">Buy House</button>
-            <button class="mutiplier-button" id="house"></button>
+            <button class="purchase-button" id="house-button" name="disable">Buy House</button>
+            <button class="multiplier-button" id="house"></button>
           </div>
         </div>
       </div>
@@ -49,8 +115,8 @@
           </div>
           <div class="button-container">
             <div class="profite-label" id="factory-profite"></div>
-            <button class="pucharse-button" id="factory-button" name="disable">Buy Factory</button>
-            <button class="mutiplier-button" id="factory"></button>
+            <button class="purchase-button" id="factory-button" name="disable">Buy Factory</button>
+            <button class="multiplier-button" id="factory"></button>
           </div>
         </div>
       </div>
@@ -69,8 +135,8 @@
           </div>
           <div class="button-container">
             <div class="profite-label" id="shop-profite"></div>
-            <button class="pucharse-button" id="shop-button" name="disable">Buy Shop</button>
-            <button class="mutiplier-button" id="shop"></button>
+            <button class="purchase-button" id="shop-button" name="disable">Buy Shop</button>
+            <button class="multiplier-button" id="shop"></button>
           </div>
         </div>
       </div>
@@ -89,8 +155,8 @@
           </div>
           <div class="button-container">
             <div class="profite-label" id="school-profite"></div>
-            <button class="pucharse-button" id="school-button" name="disable">Buy School</button>
-            <button class="mutiplier-button"></button>
+            <button class="purchase-button" id="school-button" name="disable">Buy School</button>
+            <button class="multiplier-button"></button>
           </div>
         </div>
       </div>
@@ -109,8 +175,8 @@
           </div>
           <div class="button-container">
             <div class="profite-label" id="public-transport-profite"></div>
-            <button class="pucharse-button" id="public-transport-button" name="disable">Buy Public Transport</button>
-            <button class="mutiplier-button" id="public-transport"></button>
+            <button class="purchase-button" id="public-transport-button" name="disable">Buy Public Transport</button>
+            <button class="multiplier-button" id="public-transport"></button>
           </div>
         </div>
       </div>
@@ -129,8 +195,8 @@
           </div>
           <div class="button-container">
             <div class="profite-label" id="usine-profite"></div>
-            <button class="pucharse-button" id="usine-button" name="disable">Buy Usine</button>
-            <button class="mutiplier-button" id="usine" id="usine"></button>
+            <button class="purchase-button" id="usine-button" name="disable">Buy Usine</button>
+            <button class="multiplier-button" id="usine" id="usine"></button>
           </div>
         </div>
       </div>
@@ -149,8 +215,8 @@
           </div>
           <div class="button-container">
             <div class="profite-label" id="church-profite"></div>
-            <button class="pucharse-button" id="church-button" name="disable">Buy Church</button>
-            <button class="mutiplier-button" id="church" id="church"></button>
+            <button class="purchase-button" id="church-button" name="disable">Buy Church</button>
+            <button class="multiplier-button" id="church" id="church"></button>
           </div>
         </div>
       </div>
@@ -169,8 +235,8 @@
           </div>
           <div class="button-container">
             <div class="profite-label" id="mall-profite"></div>
-            <button class="pucharse-button" id="mall-button" name="disable">Buy Mall</button>
-            <button class="mutiplier-button" id="mall" id="mall"></button>
+            <button class="purchase-button" id="mall-button" name="disable">Buy Mall</button>
+            <button class="multiplier-button" id="mall" id="mall"></button>
           </div>
         </div>
       </div>
@@ -189,8 +255,8 @@
           </div>
           <div class="button-container">
             <div class="profite-label" id="airport-profite"></div>
-            <button class="pucharse-button" id="airport-button" name="disable">Buy Airport</button>
-            <button class="mutiplier-button" id="airport" id="airport"></button>
+            <button class="purchase-button" id="airport-button" name="disable">Buy Airport</button>
+            <button class="multiplier-button" id="airport" id="airport"></button>
           </div>
         </div>
       </div>
@@ -209,8 +275,8 @@
           </div>
           <div class="button-container">
             <div class="profite-label" id="city-hall-profite"></div>
-            <button class="pucharse-button" id="city-hall-button" name="disable">Buy City Hall</button>
-            <button class="mutiplier-button" id="city-hall" id="city-hall"></button>
+            <button class="purchase-button" id="city-hall-button" name="disable">Buy City Hall</button>
+            <button class="multiplier-button" id="city-hall" id="city-hall"></button>
           </div>
         </div>
       </div>

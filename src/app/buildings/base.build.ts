@@ -47,7 +47,7 @@ export abstract class BaseBuild implements Build {
     const { element } = props;
     this.slider = document.querySelector(`.animated-slider#${element}-slider`);
     this.button = document.querySelector(`#${element}-button`);
-    this.multipleButton = document.querySelector(`.mutiplier-button#${element}`);
+    this.multipleButton = document.querySelector(`.multiplier-button#${element}`);
     this.priceLabel = document.querySelector(`.price-label#${element}-price`);
     this.profiteLabel = document.querySelector(`.profite-label#${element}-profite`);
     this.buildingIcon = document.querySelector(`.building-icon#${element}`);
