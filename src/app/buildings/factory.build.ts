@@ -2,13 +2,13 @@ import { Service } from "typedi";
 import { BuildingIcons } from "../../assets";
 import { BuildNames } from "../models";
 import { BaseBuild } from "./base.build";
-import { initialProfiteRate, initialPrice, initialFee, initialProfite } from "./constants";
+import { initialProfiteRate, initialPrice, initialFee, initialProfite, animationTime } from "./constants";
 
 @Service()
 export class FactoryBuild extends BaseBuild {
   constructor() {
     super({
-      animationTime: 10,
+      animationTime: animationTime.factory,
       element: BuildNames.factory,
       fee: initialFee.factory,
       price: initialPrice.factory,

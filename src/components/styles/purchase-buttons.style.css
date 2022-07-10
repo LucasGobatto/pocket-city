@@ -58,6 +58,7 @@
   margin: auto 0;
   width: 100px;
   text-align: center;
+  color: var(--primary);
 }
 
 .button-container {

@@ -1,5 +1,16 @@
 import { Service } from "typedi";
-import { FactoryBuild, HouseBuild, ShopBuild } from "../buildings";
+import {
+  AirportBuild,
+  ChurchBuild,
+  FactoryBuild,
+  HouseBuild,
+  MallBuild,
+  PublicTransportBuild,
+  SchoolBuild,
+  ShopBuild,
+  UsineBuild,
+  CityHallBuild,
+} from "../buildings";
 import { Build } from "../models";
 
 @Service()
@@ -9,9 +20,23 @@ export class AddEventListenerController {
   constructor(
     private readonly houseBuild: HouseBuild,
     private readonly factoryBuild: FactoryBuild,
-    private readonly shopBuild: ShopBuild
+    private readonly shopBuild: ShopBuild,
+    private readonly schoolBuild: SchoolBuild,
+    private readonly publicTransportBuild: PublicTransportBuild,
+    private readonly usineBuild: UsineBuild,
+    private readonly churchBuild: ChurchBuild,
+    private readonly mallBuild: MallBuild,
+    private readonly airportBuild: AirportBuild,
+    private readonly cityHallBuild: CityHallBuild
   ) {
-    this.buildings = [this.houseBuild, this.factoryBuild, this.shopBuild];
+    this.buildings = [
+      this.houseBuild,
+      this.factoryBuild,
+      this.shopBuild,
+      this.schoolBuild,
+      this.publicTransportBuild,
+      this.usineBuild,
+    ];
   }
 
   addEventListeners() {
