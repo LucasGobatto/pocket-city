@@ -41,6 +41,10 @@ export class PocketCityGame {
       this.schoolBuild.observerMoneyAndSetActive();
       this.publicTransportBuild.observerMoneyAndSetActive();
       this.usineBuild.observerMoneyAndSetActive();
+      this.churchBuild.observerMoneyAndSetActive();
+      this.mallBuild.observerMoneyAndSetActive();
+      this.airportBuild.observerMoneyAndSetActive();
+      this.cityHallBuild.observerMoneyAndSetActive();
     }, GameStats.gameTicker);
   }
 }

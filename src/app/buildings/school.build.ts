@@ -15,6 +15,13 @@ export class SchoolBuild extends BaseBuild {
       price: initialPrice.school,
       initialProfite: initialProfite.school,
       increaseProfiteRate: initialProfiteRate.school,
+      maintainerProps: {
+        description: "Description to school",
+        icon: BuildingIcons.school,
+        price: initialPrice.school * 100,
+        title: "School Maintainer",
+        wasBought: false,
+      },
     });
   }
 }

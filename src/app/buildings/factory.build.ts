@@ -15,6 +15,13 @@ export class FactoryBuild extends BaseBuild {
       initialProfite: initialProfite.factory,
       increaseProfiteRate: initialProfiteRate.factory,
       icon: BuildingIcons.factory,
+      maintainerProps: {
+        description: "Description to factory",
+        icon: BuildingIcons.factory,
+        price: initialPrice.factory * 100,
+        title: "Factory Maintainer",
+        wasBought: false,
+      },
     });
   }
 }

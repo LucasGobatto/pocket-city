@@ -15,6 +15,13 @@ export class UsineBuild extends BaseBuild {
       increaseProfiteRate: initialProfiteRate.usine,
       initialProfite: initialProfite.usine,
       price: initialPrice.usine,
+      maintainerProps: {
+        description: "Description to usine",
+        icon: BuildingIcons.usine,
+        price: initialPrice.usine * 100,
+        title: "Usine Maintainer",
+        wasBought: false,
+      },
     });
   }
 }

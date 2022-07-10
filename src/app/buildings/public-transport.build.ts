@@ -15,6 +15,13 @@ export class PublicTransportBuild extends BaseBuild {
       increaseProfiteRate: initialProfiteRate.publicTransport,
       initialProfite: initialProfite.publicTransport,
       price: initialPrice.publicTransport,
+      maintainerProps: {
+        description: "Description to public transport",
+        icon: BuildingIcons.publicTransport,
+        price: initialPrice.publicTransport * 100,
+        title: "Public Transport Maintainer",
+        wasBought: false,
+      },
     });
   }
 }

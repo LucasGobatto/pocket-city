@@ -12,6 +12,9 @@ import {
   CityHallBuild,
 } from "../buildings";
 import { Build } from "../models";
+import { menuItemsButtons } from "../tags";
+import { MaintainersWindowsEvent } from "./events/open-maintainers-windown.event";
+import { RenderCards } from "./render-cards";
 
 @Service()
 export class AddEventListenerController {
@@ -27,7 +30,9 @@ export class AddEventListenerController {
     private readonly churchBuild: ChurchBuild,
     private readonly mallBuild: MallBuild,
     private readonly airportBuild: AirportBuild,
-    private readonly cityHallBuild: CityHallBuild
+    private readonly cityHallBuild: CityHallBuild,
+    private readonly maintainersWindowsEvent: MaintainersWindowsEvent,
+    private readonly renderMaintainerCards: RenderCards
   ) {
     this.buildings = [
       this.houseBuild,
@@ -36,6 +41,10 @@ export class AddEventListenerController {
       this.schoolBuild,
       this.publicTransportBuild,
       this.usineBuild,
+      this.churchBuild,
+      this.mallBuild,
+      this.airportBuild,
+      this.cityHallBuild,
     ];
   }
 
@@ -53,5 +62,22 @@ export class AddEventListenerController {
         build.setMultiplePurchaseValue();
       });
     });
+
+    menuItemsButtons.maintainers.addEventListener("click", () => {
+      if (!this.maintainersWindowsEvent.isOpen) {
+        this.renderMaintainerCards.render(this.getCards());
+      }
+
+      this.maintainersWindowsEvent.open();
+    });
+
+    menuItemsButtons.closeMaintainersWindow.addEventListener("click", () => {
+      this.maintainersWindowsEvent.close();
+      this.renderMaintainerCards.unrender();
+    });
+  }
+
+  private getCards() {
+    return this.buildings.map((build) => build.getMaintainerCardProps());
   }
 }

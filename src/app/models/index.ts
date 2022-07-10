@@ -4,9 +4,10 @@ export interface CityStatus {
 }
 
 export interface Build {
-  setImprover: (active: boolean) => void;
-  setInitialActive: () => void;
-  setMultiplePurchaseValue: () => void;
+  setImprover: VoidFunction;
+  setInitialActive: VoidFunction;
+  setMultiplePurchaseValue: VoidFunction;
+  getMaintainerCardProps: () => CardProps;
   getPrice: () => number;
   getButton: () => HTMLButtonElement;
   getProfite: () => number;
@@ -15,8 +16,8 @@ export interface Build {
   getMultiplePurchaseButton: () => HTMLButtonElement;
   getAnimationTime: () => number;
   getSlider: () => HTMLDivElement;
-  getMoney: () => void;
-  addBuild: () => void;
+  getMoney: VoidFunction;
+  addBuild: VoidFunction;
   observerMoneyAndSetActive: (where: string) => void;
 }
 
@@ -31,4 +32,14 @@ export enum BuildNames {
   mall = "mall",
   airport = "airport",
   cityHall = "city-hall",
+}
+
+export interface CardProps {
+  title: string;
+  description: string;
+  price: number;
+  wasBought: boolean;
+  icon: any;
+  isActive?: boolean;
+  eventListener: VoidFunction;
 }

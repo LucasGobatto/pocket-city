@@ -15,6 +15,13 @@ export class ChurchBuild extends BaseBuild {
       increaseProfiteRate: initialProfiteRate.church,
       initialProfite: initialProfite.church,
       price: initialPrice.church,
+      maintainerProps: {
+        description: "Description to church",
+        icon: BuildingIcons.church,
+        price: initialPrice.church * 100,
+        title: "Church Maintainer",
+        wasBought: false,
+      },
     });
   }
 }

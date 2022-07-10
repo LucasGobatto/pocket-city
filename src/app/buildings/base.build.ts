@@ -1,6 +1,6 @@
-import { AddAnimation } from "../event-listener/add-animation.event-listener";
+import { AddAnimation } from "../event-listener/add-animation";
 import { GameStats } from "../game-stats";
-import { Build, BuildNames } from "../models";
+import { Build, BuildNames, CardProps } from "../models";
 import { setElementActive } from "../utils";
 import { moneyFormater } from "../utils/money-formater";
 
@@ -13,6 +13,7 @@ interface BuildProps {
   animationTime: number;
   icon: string;
   isInitialActive?: boolean;
+  maintainerProps: Omit<CardProps, "eventListener">;
 }
 
 const multiplePurchaseValues = [1, 10, 100];
@@ -28,6 +29,7 @@ export abstract class BaseBuild implements Build {
   private readonly progressBar: HTMLDivElement;
   private readonly buildingAmountLabel: HTMLParagraphElement;
   private readonly icon: any;
+  private readonly maintainerProps: Omit<CardProps, "eventListener">;
 
   private currentProgressLevel = baseProgress[0];
   private currentPurchaseValues = 0;
@@ -54,11 +56,12 @@ export abstract class BaseBuild implements Build {
     this.progressBar = document.querySelector(`.animated-progress-bar#${element}`);
     this.buildingAmountLabel = document.querySelector(`.building-amount#${element}`);
 
-    this.initialProfite = props.initialProfite;
     this.increaseProfiteRate = props.increaseProfiteRate;
-
-    this.isActive = props.isInitialActive;
+    this.maintainerProps = props.maintainerProps;
     this.icon = props.icon;
+
+    this.initialProfite = props.initialProfite;
+    this.isActive = props.isInitialActive;
     this.price = props.price;
     this.fee = props.fee;
     this.animationTime = props.animationTime;
@@ -75,14 +78,27 @@ export abstract class BaseBuild implements Build {
     this.updateMultiplePurchaseValue();
   }
 
+  getMaintainerCardProps(): CardProps {
+    return { ...this.maintainerProps, isActive: this.amount > 0, eventListener: this.setImprover.bind(this) };
+  }
+
   observerMoneyAndSetActive() {
     this.setEphemeralPrice();
 
     setElementActive(this.button, GameStats.money >= this.ephemeralPrice);
   }
 
-  setImprover(active: boolean) {
-    this.hasImprover = active;
+  setImprover() {
+    this.maintainerProps.wasBought = true;
+
+    GameStats.updateMoney(-this.maintainerProps.price);
+
+    this.hasImprover = true;
+
+    if (!this.interval) {
+      AddAnimation.setAnimationInteractionCount(this.slider, "infinite");
+      this.updateGameMoney();
+    }
   }
 
   setInitialActive() {
@@ -211,12 +227,19 @@ export abstract class BaseBuild implements Build {
 
   private async updateGameMoney() {
     AddAnimation.animate(this.slider, this.animationTime);
-    this.interval = (this.hasImprover ? setInterval : setTimeout)(() => {
+    this.interval = setTimeout(() => {
       GameStats.updateMoney(this.getProfite());
 
-      this.observerMoneyAndSetActive();
       this.stopAnimation();
-      this.interval = null;
+      this.observerMoneyAndSetActive();
+
+      if (this.hasImprover) {
+        AddAnimation.animate(this.slider, this.animationTime);
+        AddAnimation.setAnimationInteractionCount(this.slider, "infinite");
+        this.updateGameMoney();
+      } else {
+        this.interval = null;
+      }
     }, this.animationTime * 1000);
   }
 

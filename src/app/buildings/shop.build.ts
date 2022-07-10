@@ -15,6 +15,13 @@ export class ShopBuild extends BaseBuild {
       increaseProfiteRate: initialProfiteRate.shop,
       fee: initialFee.shop,
       icon: BuildingIcons.shop,
+      maintainerProps: {
+        description: "Description to shop",
+        icon: BuildingIcons.shop,
+        price: initialPrice.shop * 100,
+        title: "Shop Maintainer",
+        wasBought: false,
+      },
     });
   }
 }

@@ -15,6 +15,13 @@ export class CityHallBuild extends BaseBuild {
       increaseProfiteRate: initialProfiteRate.cityHall,
       initialProfite: initialProfite.cityHall,
       price: initialPrice.cityHall,
+      maintainerProps: {
+        description: "Description to city hall",
+        icon: BuildingIcons.cityHall,
+        price: initialPrice.cityHall * 100,
+        title: "City Hall Maintainer",
+        wasBought: false,
+      },
     });
   }
 }

@@ -15,6 +15,13 @@ export class MallBuild extends BaseBuild {
       increaseProfiteRate: initialProfiteRate.mall,
       initialProfite: initialProfite.mall,
       price: initialPrice.mall,
+      maintainerProps: {
+        description: "Description to mall",
+        icon: BuildingIcons.mall,
+        price: initialPrice.mall * 100,
+        title: "Mall Maintainer",
+        wasBought: false,
+      },
     });
   }
 }

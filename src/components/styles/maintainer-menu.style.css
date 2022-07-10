@@ -1,6 +1,4 @@
 .maintainers-wrapper {
-  /* toggle display flex on click */
-  display: flex;
   display: none;
   position: absolute;
   width: 100%;
@@ -12,7 +10,7 @@
   flex-direction: column;
 }
 
-.close-menu {
+.close-maintainers-wrapper {
   background-color: transparent;
   height: 50px;
   width: 50px;
@@ -73,8 +71,6 @@
 }
 
 .maintainer-card img {
-  border: 2px solid var(--black);
-  border-radius: 10px;
   width: 100px;
   height: 100px;
 }

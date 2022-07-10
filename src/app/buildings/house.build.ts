@@ -16,6 +16,13 @@ export class HouseBuild extends BaseBuild {
       fee: initialFee.house,
       icon: BuildingIcons.house,
       isInitialActive: true,
+      maintainerProps: {
+        description: "Description to house",
+        icon: BuildingIcons.house,
+        price: initialPrice.house * 100,
+        title: "House Keeper",
+        wasBought: false,
+      },
     });
   }
 

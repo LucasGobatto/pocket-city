@@ -15,6 +15,13 @@ export class AirportBuild extends BaseBuild {
       increaseProfiteRate: initialProfiteRate.airport,
       initialProfite: initialProfite.airport,
       price: initialPrice.airport,
+      maintainerProps: {
+        description: "Description to Airport",
+        icon: BuildingIcons.airport,
+        price: initialPrice.airport * 100,
+        title: "Airport Maintainer",
+        wasBought: false,
+      },
     });
   }
 }
