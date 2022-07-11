@@ -1,6 +1,8 @@
 .purchase-wrapper {
   display: grid;
-  grid-template-columns: repeat(2, auto);
+  margin:  0 auto;
+  width: 80%;
+  grid-template-columns: repeat(2, 50%);
   grid-template-rows: repeat(5, auto);
   grid-auto-flow: column;
 }
@@ -55,8 +57,8 @@
 }
 
 .price-label {
-  margin: auto 0;
-  width: 100px;
+  margin: auto 10px;
+  width: auto;
   text-align: center;
   color: var(--primary);
 }
@@ -66,12 +68,12 @@
   height: 40px;
 }
 
-.purchase-button, .multiplier-button {
+.purchase-button {
   background-color: var(--secondary);
   color: var(--white);
   border: var(--secondary) solid 2px;
   border-radius: 10px;
-  width: 100px;
+  width: 150px;
   cursor: pointer;
   margin: 5px 2px;
   padding: 2px 5px;
@@ -116,7 +118,7 @@
 
 [name=active] {
   background-color: var(--secondary);
-  color: #f3f3f3;
+  color:var(--white);
 }
 
 [name=disable] {
@@ -127,11 +129,9 @@
 }
 
 .profite-label {
-  
   font-size: 16px;
   margin: auto 10px;
   color: var(--primary);
   font-weight: bold;
   z-index: 1;
-  width: 100px;
 }

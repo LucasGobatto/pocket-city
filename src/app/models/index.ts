@@ -13,7 +13,6 @@ export interface Build {
   getProfite: () => number;
   getProgressBar: () => HTMLDivElement;
   getPurchaseIconButton: () => HTMLDivElement;
-  getMultiplePurchaseButton: () => HTMLButtonElement;
   getAnimationTime: () => number;
   getSlider: () => HTMLDivElement;
   getMoney: VoidFunction;

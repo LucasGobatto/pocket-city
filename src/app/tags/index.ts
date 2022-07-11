@@ -1,4 +1,5 @@
 export const moneyDisplay = document.querySelector(".wallet-money");
+export const multiplierButton = document.querySelector(".multiplier-button");
 
 export const neighborhood = document.querySelector(".neighborhood");
 

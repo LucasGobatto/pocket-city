@@ -11,8 +11,9 @@ import {
   UsineBuild,
   CityHallBuild,
 } from "../buildings";
+import { GameStats } from "../game-stats";
 import { Build } from "../models";
-import { menuItemsButtons } from "../tags";
+import { menuItemsButtons, multiplierButton } from "../tags";
 import { MaintainersWindowsEvent } from "./events/open-maintainers-windown.event";
 import { RenderCards } from "./render-cards";
 
@@ -57,10 +58,11 @@ export class AddEventListenerController {
       build.getPurchaseIconButton().addEventListener("click", () => {
         build.getMoney();
       });
+    });
 
-      build.getMultiplePurchaseButton().addEventListener("click", () => {
-        build.setMultiplePurchaseValue();
-      });
+    multiplierButton.addEventListener("click", () => {
+      GameStats.updateMultiplePurchaseValue();
+      this.buildings.forEach((build) => build.setMultiplePurchaseValue());
     });
 
     menuItemsButtons.maintainers.addEventListener("click", () => {

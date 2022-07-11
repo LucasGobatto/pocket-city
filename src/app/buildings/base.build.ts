@@ -1,6 +1,7 @@
 import { AddAnimation } from "../event-listener/add-animation";
 import { GameStats } from "../game-stats";
 import { Build, BuildNames, CardProps } from "../models";
+import { multiplierButton } from "../tags";
 import { setElementActive } from "../utils";
 import { moneyFormater } from "../utils/money-formater";
 
@@ -16,13 +17,11 @@ interface BuildProps {
   maintainerProps: Omit<CardProps, "eventListener">;
 }
 
-const multiplePurchaseValues = [1, 10, 100];
 const baseProgress = [10, 20, 50, 100, 150, 200, 300, 400, 500, 750, 1000];
 
 export abstract class BaseBuild implements Build {
   private readonly slider: HTMLDivElement;
   private readonly button: HTMLButtonElement;
-  private readonly multipleButton: HTMLButtonElement;
   private readonly priceLabel: HTMLParagraphElement;
   private readonly profiteLabel: HTMLDivElement;
   private readonly buildingIcon: HTMLDivElement;
@@ -49,7 +48,6 @@ export abstract class BaseBuild implements Build {
     const { element } = props;
     this.slider = document.querySelector(`.animated-slider#${element}-slider`);
     this.button = document.querySelector(`#${element}-button`);
-    this.multipleButton = document.querySelector(`.multiplier-button#${element}`);
     this.priceLabel = document.querySelector(`.price-label#${element}-price`);
     this.profiteLabel = document.querySelector(`.profite-label#${element}-profite`);
     this.buildingIcon = document.querySelector(`.building-icon#${element}`);
@@ -72,10 +70,10 @@ export abstract class BaseBuild implements Build {
     }
 
     this.updatePriceLabel();
+    this.updatePurchaseIcon();
     this.updateProfiteLabel();
     this.updateCurrentProgress();
     this.updateBuildingAmountLabel();
-    this.updateMultiplePurchaseValue();
   }
 
   getMaintainerCardProps(): CardProps {
@@ -106,11 +104,7 @@ export abstract class BaseBuild implements Build {
       throw new Error("Already active");
     }
 
-    this.updatePurchaseIcon();
-  }
-
-  getMultiplePurchaseButton() {
-    return this.multipleButton;
+    this.isActive = true;
   }
 
   getProgressBar() {
@@ -132,7 +126,7 @@ export abstract class BaseBuild implements Build {
   getProfite() {
     let amount = this.amount;
     if (this.amount > 1) {
-      amount += multiplePurchaseValues[this.currentPurchaseValues] - 1;
+      amount += GameStats.currentMultiplierValue - 1;
     }
 
     return this.getProfiteRecursion(amount);
@@ -157,14 +151,7 @@ export abstract class BaseBuild implements Build {
   }
 
   setMultiplePurchaseValue() {
-    if (this.currentPurchaseValues === multiplePurchaseValues.length - 1) {
-      this.currentPurchaseValues = 0;
-    } else {
-      this.currentPurchaseValues += 1;
-    }
-
     this.setEphemeralPrice();
-    this.updateMultiplePurchaseValue();
     this.observerMoneyAndSetActive();
     this.updatePriceLabel(this.ephemeralPrice);
   }
@@ -173,15 +160,15 @@ export abstract class BaseBuild implements Build {
     this.setEphemeralPrice();
 
     if (GameStats.money >= this.ephemeralPrice) {
-      if (this.amount === 0 && !this.isActive) {
-        this.updatePurchaseIcon();
+      if (this.amount === 0) {
+        this.setInitialActive();
       }
 
       GameStats.updateMoney(-this.ephemeralPrice);
 
-      this.amount += multiplePurchaseValues[this.currentPurchaseValues];
+      this.amount += GameStats.currentMultiplierValue;
 
-      const currentFee = Math.pow(this.fee, multiplePurchaseValues[this.currentPurchaseValues]);
+      const currentFee = Math.pow(this.fee, GameStats.currentMultiplierValue);
       const currentPrice = this.price * currentFee;
       this.price = currentPrice;
 
@@ -255,10 +242,6 @@ export abstract class BaseBuild implements Build {
     this.buildingAmountLabel.innerHTML = `${this.amount}`;
   }
 
-  private updateMultiplePurchaseValue() {
-    this.multipleButton.innerHTML = `x ${multiplePurchaseValues[this.currentPurchaseValues]}`;
-  }
-
   private updatePurchaseIcon() {
     const image = new Image(50, 50);
     image.src = this.icon;
@@ -266,7 +249,6 @@ export abstract class BaseBuild implements Build {
 
     this.buildingIcon.appendChild(image);
     this.buildingIcon.setAttribute("id", "active");
-    this.isActive = true;
   }
 
   private stopAnimation() {
@@ -274,7 +256,7 @@ export abstract class BaseBuild implements Build {
   }
 
   private setEphemeralPrice() {
-    const amount = multiplePurchaseValues[this.currentPurchaseValues];
+    const amount = GameStats.currentMultiplierValue;
 
     this.ephemeralPrice = [...new Array(amount)].map(() => this.price).reduce((prev, cct) => (cct += prev * this.fee), 0);
   }
