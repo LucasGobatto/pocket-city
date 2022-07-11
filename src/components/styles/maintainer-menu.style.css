@@ -92,17 +92,26 @@
 }
 
 .maintainer-button {
-  background-color: var(--secondary);
-  color: var(--white);
   margin: auto 10px;
   height: 40px;
   width: 60px;
   border: none;
-  cursor: pointer;
   border-radius: 10px;
   font-weight: bold;
 }
 
-.maintainer-button:hover {
- background-color: var(--primary); 
+.maintainer-button#active {
+  background-color: var(--secondary);
+  cursor: pointer;
+  color: var(--white);
+}
+
+.maintainer-button#active:hover {
+  background-color: var(--primary);
+  }
+
+
+.maintainer-button#disable {
+  background-color: var(--white); 
+  color: var(--black); 
 }

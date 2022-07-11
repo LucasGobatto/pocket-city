@@ -45,7 +45,7 @@ export class RenderCards {
       });
 
       if (GameStats.money < props.price || !props.isActive) {
-        purchaseButton.setAttribute("name", "disable");
+        purchaseButton.setAttribute("id", "disable");
       }
 
       return card;
