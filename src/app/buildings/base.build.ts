@@ -31,7 +31,6 @@ export abstract class BaseBuild implements Build {
   private readonly maintainerProps: Omit<CardProps, "eventListener">;
 
   private currentProgressLevel = baseProgress[0];
-  private currentPurchaseValues = 0;
   private isActive: boolean;
   private price: number;
   private fee: number;

@@ -51,16 +51,16 @@ export const initialProfite = {
 };
 
 export const animationTime = {
-  house: 2,
-  factory: 6,
-  shop: 10,
-  school: 25,
-  publicTransport: 60,
-  usine: 180,
-  church: 300,
-  mall: 600,
-  airport: 1800,
-  cityHall: 3600,
+  house: 1,
+  factory: 3,
+  shop: 6,
+  school: 10,
+  publicTransport: 25,
+  usine: 60,
+  church: 100,
+  mall: 1800,
+  airport: 3600,
+  cityHall: 10000,
 };
 
 export const improveresValues = [1000, 10000, 15000];

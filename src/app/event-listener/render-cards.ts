@@ -9,8 +9,8 @@ export class RenderCards {
   private currentCards: Node[];
 
   render(props: CardProps[]) {
-    this.currentCards = props.map((prop, index) => this.createCard(prop, index)).filter(Boolean);
-    this.currentCards.forEach((card) => cardsList.appendChild(card));
+    this.currentCards = props.map((prop, index) => this.createCard(prop, index));
+    this.currentCards.filter(Boolean).forEach((card) => cardsList.appendChild(card));
   }
 
   unrender() {
@@ -54,9 +54,5 @@ export class RenderCards {
 
   private removeFromStack(cardIndex: number) {
     cardsList.removeChild(this.currentCards[cardIndex]);
-
-    const cardsBefore = this.currentCards.slice(0, cardIndex - 1);
-    const cardsAfter = this.currentCards.splice(cardIndex);
-    this.currentCards = [...cardsBefore, ...cardsAfter];
   }
 }

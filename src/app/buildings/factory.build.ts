@@ -18,7 +18,7 @@ export class FactoryBuild extends BaseBuild {
       maintainerProps: {
         description: "Description to factory",
         icon: BuildingIcons.factory,
-        price: initialPrice.factory * 100,
+        price: initialPrice.factory * 10,
         title: "Factory Maintainer",
         wasBought: false,
       },
