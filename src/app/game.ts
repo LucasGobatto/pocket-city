@@ -30,7 +30,7 @@ export class PocketCityGame {
     private readonly cityHallBuild: CityHallBuild
   ) {
     this.addEventListenerController.addEventListeners();
-    GameStats.updateMoney(0);
+    GameStats.updateMoney();
   }
 
   async run() {

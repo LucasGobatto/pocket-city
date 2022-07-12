@@ -2,7 +2,7 @@ import { Service } from "typedi";
 import { BuildingIcons } from "../../assets";
 import { BuildNames } from "../models";
 import { BaseBuild } from "./base.build";
-import { initialProfiteRate, initialPrice, initialFee, initialProfite, animationTime } from "./constants";
+import { initialprofitRate, initialPrice, initialFee, initialprofit, animationTime } from "./constants";
 
 @Service()
 export class FactoryBuild extends BaseBuild {
@@ -12,8 +12,8 @@ export class FactoryBuild extends BaseBuild {
       element: BuildNames.factory,
       fee: initialFee.factory,
       price: initialPrice.factory,
-      initialProfite: initialProfite.factory,
-      increaseProfiteRate: initialProfiteRate.factory,
+      initialprofit: initialprofit.factory,
+      increaseprofitRate: initialprofitRate.factory,
       icon: BuildingIcons.factory,
       maintainerProps: {
         description: "Description to factory",

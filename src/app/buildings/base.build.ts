@@ -8,8 +8,8 @@ import { moneyFormater } from "../utils/money-formater";
 interface BuildProps {
   element: BuildNames;
   price: number;
-  initialProfite: number;
-  increaseProfiteRate: number;
+  initialprofit: number;
+  increaseprofitRate: number;
   fee: number;
   animationTime: number;
   icon: string;
@@ -23,7 +23,7 @@ export abstract class BaseBuild implements Build {
   private readonly slider: HTMLDivElement;
   private readonly button: HTMLButtonElement;
   private readonly priceLabel: HTMLParagraphElement;
-  private readonly profiteLabel: HTMLDivElement;
+  private readonly profitLabel: HTMLDivElement;
   private readonly buildingIcon: HTMLDivElement;
   private readonly progressBar: HTMLDivElement;
   private readonly buildingAmountLabel: HTMLParagraphElement;
@@ -39,8 +39,8 @@ export abstract class BaseBuild implements Build {
   private hasImprover = false;
   private ephemeralPrice: number;
 
-  protected readonly increaseProfiteRate: number;
-  protected initialProfite: number;
+  protected readonly increaseprofitRate: number;
+  protected initialprofit: number;
   protected amount = 0;
 
   constructor(props: BuildProps) {
@@ -48,16 +48,16 @@ export abstract class BaseBuild implements Build {
     this.slider = document.querySelector(`.animated-slider#${element}-slider`);
     this.button = document.querySelector(`#${element}-button`);
     this.priceLabel = document.querySelector(`.price-label#${element}-price`);
-    this.profiteLabel = document.querySelector(`.profite-label#${element}-profite`);
+    this.profitLabel = document.querySelector(`.profit-label#${element}-profit`);
     this.buildingIcon = document.querySelector(`.building-icon#${element}`);
     this.progressBar = document.querySelector(`.animated-progress-bar#${element}`);
     this.buildingAmountLabel = document.querySelector(`.building-amount#${element}`);
 
-    this.increaseProfiteRate = props.increaseProfiteRate;
+    this.increaseprofitRate = props.increaseprofitRate;
     this.maintainerProps = props.maintainerProps;
     this.icon = props.icon;
 
-    this.initialProfite = props.initialProfite;
+    this.initialprofit = props.initialprofit;
     this.isActive = props.isInitialActive;
     this.price = props.price;
     this.fee = props.fee;
@@ -70,7 +70,7 @@ export abstract class BaseBuild implements Build {
 
     this.updatePriceLabel();
     this.updatePurchaseIcon();
-    this.updateProfiteLabel();
+    this.updateprofitLabel();
     this.updateCurrentProgress();
     this.updateBuildingAmountLabel();
   }
@@ -122,13 +122,13 @@ export abstract class BaseBuild implements Build {
     return this.button;
   }
 
-  getProfite() {
+  getprofit() {
     let amount = this.amount;
     if (this.amount > 1) {
       amount += GameStats.currentMultiplierValue - 1;
     }
 
-    return this.getProfiteRecursion(amount);
+    return this.getprofitRecursion(amount);
   }
 
   getAnimationTime() {
@@ -178,7 +178,7 @@ export abstract class BaseBuild implements Build {
 
       this.updateCurrentProgress();
       this.updateBuildingAmountLabel();
-      this.updateProfiteLabel();
+      this.updateprofitLabel();
       this.updatePriceLabel(this.ephemeralPrice);
       this.observerMoneyAndSetActive();
     } else {
@@ -214,7 +214,7 @@ export abstract class BaseBuild implements Build {
   private async updateGameMoney() {
     AddAnimation.animate(this.slider, this.animationTime);
     this.interval = setTimeout(() => {
-      GameStats.updateMoney(this.getProfite());
+      GameStats.updateMoney(this.getprofit());
 
       this.stopAnimation();
       this.observerMoneyAndSetActive();
@@ -233,8 +233,8 @@ export abstract class BaseBuild implements Build {
     this.priceLabel.innerHTML = `$ ${moneyFormater(ephemeralPrice ?? this.getPrice())}`;
   }
 
-  private updateProfiteLabel() {
-    this.profiteLabel.innerHTML = `$ ${moneyFormater(this.getProfite())}`;
+  private updateprofitLabel() {
+    this.profitLabel.innerHTML = `$ ${moneyFormater(this.getprofit())}`;
   }
 
   private updateBuildingAmountLabel() {
@@ -260,11 +260,11 @@ export abstract class BaseBuild implements Build {
     this.ephemeralPrice = [...new Array(amount)].map(() => this.price).reduce((prev, cct) => (cct += prev * this.fee), 0);
   }
 
-  private getProfiteRecursion(amount: number): number {
+  private getprofitRecursion(amount: number): number {
     if (amount === 0) {
-      return this.initialProfite;
+      return this.initialprofit;
     } else {
-      return this.increaseProfiteRate * this.getProfiteRecursion(amount - 1);
+      return this.increaseprofitRate * this.getprofitRecursion(amount - 1);
     }
   }
 }

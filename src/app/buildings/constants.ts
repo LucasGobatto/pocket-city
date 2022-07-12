@@ -1,4 +1,4 @@
-export const initialProfiteRate = {
+export const initialprofitRate = {
   house: 1.0,
   factory: 1.02,
   shop: 1.05,
@@ -37,7 +37,7 @@ export const initialPrice = {
   cityHall: 100000000,
 };
 
-export const initialProfite = {
+export const initialprofit = {
   house: 1,
   factory: 54,
   shop: 1200,

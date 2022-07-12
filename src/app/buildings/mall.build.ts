@@ -2,7 +2,7 @@ import { Service } from "typedi";
 import { BuildingIcons } from "../../assets";
 import { BuildNames } from "../models";
 import { BaseBuild } from "./base.build";
-import { initialFee, initialPrice, initialProfite, initialProfiteRate } from "./constants";
+import { initialFee, initialPrice, initialprofit, initialprofitRate } from "./constants";
 
 @Service()
 export class MallBuild extends BaseBuild {
@@ -12,8 +12,8 @@ export class MallBuild extends BaseBuild {
       element: BuildNames.mall,
       fee: initialFee.mall,
       icon: BuildingIcons.mall,
-      increaseProfiteRate: initialProfiteRate.mall,
-      initialProfite: initialProfite.mall,
+      increaseprofitRate: initialprofitRate.mall,
+      initialprofit: initialprofit.mall,
       price: initialPrice.mall,
       maintainerProps: {
         description: "Description to mall",

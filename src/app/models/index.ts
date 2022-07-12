@@ -10,7 +10,7 @@ export interface Build {
   getMaintainerCardProps: () => CardProps;
   getPrice: () => number;
   getButton: () => HTMLButtonElement;
-  getProfite: () => number;
+  getprofit: () => number;
   getProgressBar: () => HTMLDivElement;
   getPurchaseIconButton: () => HTMLDivElement;
   getAnimationTime: () => number;
