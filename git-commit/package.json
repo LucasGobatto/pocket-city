@@ -1,7 +1,7 @@
 {
   "name": "git-commit",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "npm package to simplify git commit flow",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
