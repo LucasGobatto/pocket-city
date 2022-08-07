@@ -46,6 +46,11 @@ function exec(task) {
       rej();
     });
 
+    spawnedTask.stderr.on("data", (data) => {
+      console.info(`${data}`);
+      rej();
+    });
+
     spawnedTask.on("exit", (code) => {
       if (code !== 0) {
         console.error(`Task exit with status ${code}`);
