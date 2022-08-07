@@ -1,63 +1,44 @@
-import { spawn } from "child_process";
+#!/usr/bin/env node
+
+import { exec, addTask } from "./task.js";
+
+const validCommands = ["-m", "-message", "-p", "-push"];
 
 const args = process.argv;
 const extraParams = args.slice(2);
 
-const validCommands = ["m", "p"];
+const gCommitIndex = args.findIndex((param) => param === validCommands[0] || param === validCommands[1]);
+const gPushIndex = args.findIndex((param) => param === validCommands[2] || param === validCommands[3]);
 
-for (const params of extraParams) {
-  const data = params.split(":");
-
-  if (data.length !== 2 || !validCommands.includes(data[0])) {
-    throw new Error(`Invalid param "${params}". Run flag help to see all commands`);
-  }
+if (validCommands.includes(args[gCommitIndex + 1]) || !args[gCommitIndex + 1]) {
+  throw new Error('Flag message must come with a value like "-m commit-message"');
 }
 
-const gcommitData = extraParams[0].split(":");
-const commitMessage = gcommitData[0] === "m" ? gcommitData[1] : null;
+if (validCommands.includes(args[gPushIndex + 1]) || !args[gPushIndex + 1]) {
+  throw new Error('Flag push must come with the branch name "-p branch-name"');
+}
 
-const gpushData = extraParams[1].split(":");
-const branchName = gpushData[0] === "p" ? gpushData[1] : null;
+if (gPushIndex > -1 && gCommitIndex === -1) {
+  throw new Error('Flag push must come with a commit message name "-p branch-name -m commit-message"');
+}
 
-const gitAdd = addTask("git add .");
-const gitCommit = commitMessage && addTask(`git commit -m ${commitMessage}`);
-const gitPush = branchName && addTask(`git push origin ${branchName}`);
+const commitMessage = extraParams[gCommitIndex - 1];
+const branchName = extraParams[gPushIndex - 1];
+
+const gitAdd = addTask("git", ["add", "."]);
+const gitCommit = commitMessage && addTask("git", ["commit", "-m", commitMessage]);
+const gitPush = branchName && addTask("git", ["push", "origin", branchName]);
 
 async function runTasks() {
   await exec(gitAdd);
-  gitCommit && (await exec(gitCommit));
-  gitPush && (await exec(gitPush));
+
+  if (gitCommit) {
+    await exec(gitCommit);
+  }
+
+  if (gitPush) {
+    await exec(gitPush);
+  }
 }
 
 runTasks();
-
-function addTask(command, args) {
-  return { command, args };
-}
-
-function exec(task) {
-  console.info(`Running ${task.command}`);
-
-  return new Promise((res, rej) => {
-    const spawnedTask = spawn(task.command, task.args, { shell: true });
-
-    spawnedTask.stderr.on("error", (error) => {
-      console.error(`Task failed with message: ${error.message}`);
-      rej();
-    });
-
-    spawnedTask.stderr.on("data", (data) => {
-      console.info(`${data}`);
-      rej();
-    });
-
-    spawnedTask.on("exit", (code) => {
-      if (code !== 0) {
-        console.error(`Task exit with status ${code}`);
-        rej();
-      } else {
-        res(code);
-      }
-    });
-  });
-}
