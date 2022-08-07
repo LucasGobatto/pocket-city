@@ -5,6 +5,7 @@ export function addTask(command, args) {
 }
 
 export function exec(task) {
+  console.log(task.args);
   console.info(`Running ${[task.command, ...task.args].join(" ")}`);
 
   return new Promise((res, rej) => {
