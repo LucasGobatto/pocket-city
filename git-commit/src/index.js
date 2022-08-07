@@ -27,7 +27,7 @@ const branchName = extraParams[gPushIndex - 1];
 
 const gitAdd = addTask("git", ["add", "."]);
 const gitCommit = commitMessage && addTask("git", ["commit", "-m", commitMessage]);
-const gitPush = branchName && addTask("git", ["push", "origin", branchName]);
+const gitPush = branchName && addTask("git", ["push", "origin", `"${branchName}"`]);
 
 async function runTasks() {
   await exec(gitAdd);
